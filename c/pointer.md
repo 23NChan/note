@@ -26,11 +26,13 @@ void text01()
 
 定义一个变量 存放上面的号码 这样的变量叫做指针变量
 
+默认取地址，取空间的起始地址
+
 ```c
 void test02
 {
     int num = 100;
-    //去变量的地址用 &
+    //取变量的地址用 &
     //&num 代表变量num的起始地址
     printf("%p\n", &num);
     
@@ -51,8 +53,56 @@ void test02
 
 ```c
 void test03{
-    int num * 10;
+    int num = 10;
     
+    //指针变量两种类型：自身的类型  	 指向的类似
+    //自身类型：在指针变量定义的时候 将变量名拖黑 	剩下啥类型	指针变量就是啥类型
+    		//p 自身的类型就是int *
+    //指向的类型：在指针变量定义的时候 将变量名和离他最近的一个*一起拖黑 	剩下啥类型	指针变量指向的类型就是啥类型
+    		//p 指向的类型是int
+    
+    //指针变量指向类型的作用：决定了指针变量	所取空间内容的宽度 决定了指针变量+1跳过的单位跨度
+    int *p = NULL;
+    p = &num;
+    
+    //指针变量的跨度
+    printf("&num=%u\n", &num); //7338536
+    printf("p=%u\n", p);//7338536
+    printf("p+1=%u\n",p+1);//7338540
+    
+    chasr *p1 = &num;
+    printf("p1=%u\n",p1);//7338536
+    printf("p1+1=%u\n",p1+1);//7338537
+    
+    print("*p = %d\n", *p); //num的值
 }
 ```
+
+在linux/windows系统倒着存(小端)
+
+
+
+```c
+void test04()
+{
+    int num =0x01020304;
+    
+    int *p1 = &num;
+    
+    printf("*p1 = %#x\n", *p1);  //0x1020304
+    
+    short *p2 = &num;
+    
+    printf("*p2 = %#x\n", *p3);  //304
+    
+    char *p3 = &num;
+    printf("*p3 = %#x\n", *p3);  //4 
+    
+    short *p4 = &num;
+    p4 = p4 +1; 	//p4 += 1
+    printf("*p4 = %#x\n", *p4);  //102
+}
+```
+
+<img src="https://gitee.com/A_Xishuai/img/raw/master/img/image-20211026000753654.png" alt="image-20211026000753654"  />
 
