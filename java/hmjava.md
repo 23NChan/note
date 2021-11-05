@@ -114,3 +114,75 @@ TreeSet集合特点：
 + 没有带索引的方法，所以不能是用普通for循环遍历
 + 由于是Set集合，所以不包含重复的元素
 
+```java
+public class TreeSetDemo {
+    public static void main(String[] args) {
+        //创建集合对象
+        TreeSet<Integer> ts= new TreeSet<Integer>();
+
+        //添加元素
+        ts.add(10);
+        ts.add(30);
+        ts.add(40);
+        ts.add(20);
+        //遍历集合
+        for (Integer i :ts){
+            System.out.println(i);
+        }
+    }
+}
+```
+
+##### 自然排序Comparable的使用
+
++ 存储学生对象并遍历，创建TreeSet集合使用无参构造方法
++ 要求：按照年龄从小到大排序，年龄相同时，按照姓名的字母顺序排序
+
+```java
+public static void main(String[] args) {
+    //创建集合对象
+    TreeSet<Student> ts = new TreeSet<Student>();
+
+    //创建学生对象
+    Student s1 = new Student("xiaogong", 18);
+    Student s2 = new Student("xinhai", 20);
+    Student s3 = new Student("leishen", 500);
+    Student s4 = new Student("ganyu", 17);
+    Student s5 = new Student("shatang",18);
+
+    //把学生添加到集合
+    ts.add(s1);
+    ts.add(s2);
+    ts.add(s3);
+    ts.add(s4);
+    ts.add(s5);
+
+    for (Student s : ts) {
+        System.out.println(s.getName() + "," + s.getAge());
+    }
+}
+```
+
+```java
+@Override
+public int compareTo(Student s) {
+
+    //按年龄从小到大排序
+    int num = this.age - s.age;
+    //年龄相同时，按照姓名的字母顺序排序
+    int num2 = num == 0 ? this.name.compareTo(s.name) : num;
+    return num2;
+}
+```
+
+结论
+
++ 用TreeSet集合存储自定义对象，无参构造方法使用的是**自然排序**对元素进行排序的
++ 自然排序，就是让元素所属的类实现Comparable接口，重写compareTo(To)方法
++ 重写方法是，一定要注意排序规则必须按照要求的主要条件和次要条件来写
+
+##### 比较器排序Comparator的使用
+
++ 存储学生对象并遍历，创建TreeSet集合使用**带参构造方法**
++ 要求：按年龄从小到大排序，年龄相同时，按照姓名的字母顺序排序
+

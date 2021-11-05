@@ -1,4 +1,4 @@
-### 数据类型：
+### c数据类型：
 
 ​	//占用一个字节，存储单个字节   -128~127   ascii码  存储字符
 ​	char c = 'a';
@@ -67,4 +67,96 @@ printf("%d\n",result);
 ```
 
 
+
+### 循环控制语句
+
+#### if
+
+``` c
+	int a = 10;
+	int b = 20;
+	if(a > b)
+	{
+		printf("a比较大");
+	}
+	else 
+	{
+		printf("b比较大");
+	}
+```
+
+
+
+#### for
+
+``` c
+//死循环
+for(;;)
+	{
+		printf("1111");
+	}
+```
+
+#### while
+
+``` c
+char s = 127;  // 一个字节  -128~127
+	while(s)
+	{
+		printf("%d\n",s);
+		s++;
+	}
+
+do 
+	{
+		printf("AAAAA");
+	}while(0);
+    
+    
+```
+
+#### switch
+
+``` c
+	int week = 2;
+	switch(week)
+	{
+	case 1:
+		printf("星期一");
+		break;
+	case 2:
+		printf("星期二");
+		break;
+	case 3:
+		printf("星期三");
+		break;
+	case 4:
+		printf("星期四");
+		break;
+	case 5:
+		printf("星期五");
+		break;
+	}
+```
+
+#### sizeof()表达式   
+
+括号里面填 数据类型或者变量  返回对应的字节
+
+printf("%d\n",sizeof(int));
+printf("%d\n",sizeof(double));
+
+char ch = 'a';
+printf("%d\n",sizeof(ch));
+
+int array[] = {2,20,300,400,50020,2002,40,50};
+printf("%d\n",sizeof(array));
+
+
+取地址运算符 ： &
+逻辑与：&&
+按位与：&
+ %p表示输出十六进制的地址
+
+sizeof的作用：判断数据类型或者变量占的内存
 
