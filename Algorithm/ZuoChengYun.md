@@ -1,3 +1,5 @@
+[toc]
+
 ### 认识时间复杂度
 
 常熟时间的操作：一个操作如果和数据量没有关系，每次都是固定时间完成的操作，叫做常数操作。
@@ -140,7 +142,6 @@ public static void mergesort(int[] arr) {
     sortProcess(arr, 0, arr.length - 1);
 }
 
-
 public static void sortProcess(int[] arr, int L, int R) {
     ;
     if (L == R) {
@@ -151,7 +152,6 @@ public static void sortProcess(int[] arr, int L, int R) {
     sortProcess(arr, mid + 1, R);
     merge(arr, L, mid, R);
 }
-
 
 public static void merge(int[] arr, int l, int mid, int r) {
     int[] temp = new int[r - l + 1];
@@ -172,3 +172,64 @@ public static void merge(int[] arr, int l, int mid, int r) {
     }
 }
 ```
+
+##### 小和问题
+
+在一个数组中，没一个数左边必当前数小的数累加起来，叫做这个数组的小和
+
+```java
+public static int smallsum(int[] arr) {
+    if (arr == null && arr.length < 2) {
+        return 0;
+    }
+    //复制数组保证原数组不会受到影响
+    int[] a=new int[arr.length];
+    for (int i=0;i<arr.length;i++){
+        a[i]=arr[i];
+    }
+    return mergesort(a, 0, a.length - 1);
+}
+
+public static int mergesort(int[] arr, int L, int R) {
+    if (R == L || L > R) {
+        return 0;
+    }
+    int mid = L + ((R - L) >> 1);
+    return mergesort(arr, L, mid)
+            + mergesort(arr, mid + 1, R)
+            + merge(arr, L, mid, R);
+}
+
+public static int merge(int[] arr, int L, int mid, int R) {
+    int p1 = L;
+    int p2 = mid + 1;
+    int i = 0;
+    int[] temp = new int[R - L + 1];
+    int res = 0;
+    while (p1 <= mid && p2 <= R) {
+        res += arr[p1] < arr[p2] ? arr[p1] * (R - p2 + 1) : 0;
+        temp[i++] = arr[p1] < arr[p2] ? arr[p1++] : arr[p2++];
+    }
+    while (p1 <= mid) {
+        temp[i++] = arr[p1++];
+    }
+    while (p2 <= R) {
+        temp[i++] = arr[p2++];
+    }
+    for (i = 0; i < temp.length; i++) {
+        arr[L + i] = temp[i];
+    }
+    return res;
+}
+
+public static int nomal(int[] arr) {
+    int res = 0;
+    for (int b = arr.length - 1; b > 0; b--) {
+        for (int j = 0; j < b; j++) {
+            res += arr[j] < arr[b] ? arr[j] : 0;
+        }
+    }
+    return res;
+}
+```
+

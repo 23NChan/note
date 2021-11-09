@@ -1,3 +1,5 @@
+[TOC]
+
 ### Set
 
 #### Set集合概述和特点
@@ -185,4 +187,136 @@ public int compareTo(Student s) {
 
 + 存储学生对象并遍历，创建TreeSet集合使用**带参构造方法**
 + 要求：按年龄从小到大排序，年龄相同时，按照姓名的字母顺序排序
+
+结论
+
++ 用TreeSet集合存储自定义对象，带参构造方法使用的是**比较器排序**对元素进行排序的
++ 比较器排序，就是**让集合构造方法接收Comparator的实现类对象**，重写Compare(T 01,T 02)方法
++ 重写放法时，一定要注意排序规则必须按照要求的主要条件和次要条件来写
+
+### 泛型
+
+#### 泛型概述
+
+泛型：是JDK5中引入的特性，它提供了编译时类型安全检测机制，该机制允许在编译时检测到非法的类型他的本质是**参数化类型**，也就是说所操作的数据类型被指定为一个参数
+一提到参数，最熟悉的就是定义方法时有形参，然后调用此方法时传递实参。那么参数化类型怎么理解呢？
+顾名思义，就是**将类型由原来的具体的类型参数化，然后在使用/调用时传入具体的类型**
+这种参数类型可以用在类、方法、接口中，分别被称为泛型类、泛型方法、泛型接口
+
+##### 泛型定义格式：
+
++ <类型>:指定一种类型的格式。这里的类型可以看成是形参
++ <类型1,类型2......>:指定多种类型的格式，多种类型之间用逗号隔开。这里的类型可以看成是形参
++ 将来具体调用时候给定的类型可以看成是实参，并且实参的类型只能是引用数据类型
+
+##### 泛型的好处：
+
++ 把运行时期的问题提前到了编译期间
++ 避免了强制类型转换
+
+#### 泛型类
+
+泛型类的定义格式：
+
++ 格式：修饰符class 类名<类型>{}
+
++ 范例：public class Generic<T>{}
+
+  ​		  此处T可以随便蟹为任意表示，常见的如T、E、K、V等形式的参数通常用于表示泛型
+
+```java
+public class Generic<T> {
+    private T t;
+
+    public T getT() {
+        return t;
+    }
+
+    public void setT(T t) {
+        this.t = t;
+    }
+}
+```
+
+#### 泛型方法
+
+泛型方法的定义格式：
+
++ 格式：修饰符<类型>返回值类型方法名(类型 方法名){}
++ 范例：public <T> void show(T t){}
+
+```java
+public class Generic {
+    public <T> void show(T t) {
+        System.out.println(t);
+    }
+}
+```
+
+#### 泛型接口
+
+泛型接口定义格式：
+
++ 格式：修饰符 interface 接口名 <类型> {}
++ 范例：public interface Generic<T>{}
+
+```java
+public interface Generic<T> {
+    void show(T t);
+}
+
+public class Genericimpl<T> implements Generic<T>{
+    @Override
+    public void show(T t) {
+        System.out.println(t);
+    }
+}
+
+public class Demo {
+    public static void main(String[] args) {
+        Generic<String> g1 = new Genericimpl<String>();
+        g1.show("甘雨");
+
+        Generic<Integer> g2 = new Genericimpl<Integer>();
+        g2.show(30);
+    }
+}
+
+```
+
+
+
+#### 泛型通配符
+
+为了表示各种泛型List的父类，可以使用类型通配符
++ 类型通配符：<?>
++ List<?>：表示元素类型未知List，它的元素可以匹配**任何的类型**
++ 这种带通配符的List仅表示它是各种泛型List的父类，并不能把元素添加到其中
+
+如果说我们不希望List<?>是任何泛型List的父类，只希望它代表某一类泛型List的父类，可以使用类型通配符的上限
++ 类型通配符上线：**<? extends 类型>**
++ List<? extends Number>：它表示的类型是**Number或者其子类型**
+
+除了可以指定类型通配符的上限，我们也可以指定类型通配符的下限
++ 类型通配符下线：**<? super 类型>**
++ List<? super Number>：它表示的类型是**Number或者其父类型**
+
+```java
+//类型通配符：<?>
+List<?> list1 = new ArrayList<String>();
+List<?> list2 = new ArrayList<Number>();
+List<?> list3 = new ArrayList<Integer>();
+
+System.out.println("-----------------");
+//类型通配符的上限
+List<? extends Number> list5 = new ArrayList<Number>();
+List<? extends Number> list6 = new ArrayList<Integer>();
+
+System.out.println("-----------------");
+//类型通配符的下限
+List<? super Number> list7 = new ArrayList<Object>();
+List<? super Number> list8 = new ArrayList<Number>();
+```
+
+
 
