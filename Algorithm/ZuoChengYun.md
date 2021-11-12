@@ -130,6 +130,8 @@ public static void swap(int[] arr, int i,int j){
 
 #### 归并排序
 
+##### 递归归并
+
 时间复杂度：O(N*logN)
 
 空间复杂度：O(N)	
@@ -231,5 +233,87 @@ public static int nomal(int[] arr) {
     }
     return res;
 }
+```
+
+#### 快速排序
+
+##### 荷兰国旗问题
+
+给定一个数组arr，和一个数num，请把小于num的数放在数组的左边，等于num的数放在数组的中间，大于num的数放在数组的右边
+
+要求额外空间复杂度O(1)，时间复杂度O(N)
+
+```java
+public static int[] partition(int[] arr, int L, int R, int num) {
+    int less = L - 1;
+    int more = R + 1;
+    int cur = L;
+    while (cur < more) {
+        if (arr[cur] < num) {
+            swap(arr, ++less, cur++);
+        } else if (arr[cur] > num) {
+            swap(arr, --more, cur);
+        } else {
+            cur++;
+        }
+    }
+    return new int[]{less + 1, more - 1};
+}
+
+public static void swap(int[] arr, int i, int j) {
+    int tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+}
+```
+
+##### 随机递归快排
+
+时间复杂度 长期期望O(N*logN)
+
+额外空间复杂度O(logN)
+
+
+
+```java
+public static void quicksort(int[] arr) {
+    if (arr == null || arr.length < 2) {
+    return;
+    }
+        quicksort(arr, 0, arr.length - 1);
+    }
+
+    public static void quicksort(int[] arr, int L, int R) {
+        if (L < R) {
+            //随机取对比数，打乱初始数据结构，减少极限性g
+            swap(arr, L + (int) ((R - L ) * Math.random()), R);
+            int[] p = partition(arr, L, R);
+            quicksort(arr, L, p[0] - 1);
+            quicksort(arr, p[1] + 1, R);
+        }
+
+    }
+
+    public static int[] partition(int[] arr, int L, int R) {
+        int less = L - 1;
+        int more = R;
+        while (L < more) {
+            if (arr[L] < arr[R]) {
+                swap(arr, ++less, L++);
+            } else if (arr[L] > arr[R]) {
+                swap(arr, --more, L);
+            } else {
+                L++;
+            }
+        }
+        swap(arr, more, R);
+        return new int[]{less + 1, more};
+    }
+
+    public static void swap(int[] arr, int i, int j) {
+        int tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
 ```
 
