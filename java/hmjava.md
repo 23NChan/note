@@ -318,5 +318,46 @@ List<? super Number> list7 = new ArrayList<Object>();
 List<? super Number> list8 = new ArrayList<Number>();
 ```
 
+#### 可变参数
 
+可变参数又称参数个数可变，用作方法的参数出现，那么方法参数个数就是可变的了
 
++ 格式：修饰符 返回值类型 方法名(数据类型...变量名){}
++ 范例：public static int sum(int...a){}
+
+可变参数注意事项
+
++ 这里的变量其实是一个数组
++ 如果一个方法有多个参数，包含可变参数，可变参数要放在最后
+
+```java
+public static void main(String[] args) {
+    System.out.println(sum(10,20,30));
+}
+
+public static int sum(int... a){
+    int sum = 0;
+    for (int i:a){
+        sum +=i;
+    }
+    return sum;
+}
+```
+
+#### 可变参数的使用
+
+Arrays工具类中有一个静态方法：
+
++ public static<T> List<T> asList(T... a):返回指定数组支持的固定大小的列表
++ 返回的集合不能做增删操作，可以做修改操作
+
+List接口中有一个静态方法：
+
++ public static<E> List<E> of(E... elements):返回包含任意数量的元素的不可变列表
++ 返回的集合不能做增删改操作
+
+Set接口中有一个静态方法：
+
++ public static<E> Set<E> of(E... elements)：返回一个包含任意数量元素的不可变集合
++ 再给集合元素的时候，不能给重复的元素
++ 返回的集合不能做增删操作，没有修改的方法

@@ -317,3 +317,64 @@ public static void quicksort(int[] arr) {
     }
 ```
 
+#### 堆排序
+
+时间复杂度O(N*logN)
+
+额外空间复杂度O(1)
+
+堆结构非常重要
+
+1. 堆结构的heap Insert与heap i fy
+2. 堆结构的增大和减少
+3. 如果知识建立堆的过程，时间复杂度为O(N)
+4. 优先级队列结构，就是堆结构
+
+##### 大根堆->完全二叉树
+
+时间复杂度O(N)
+
+额外空间复杂度O(1)
+
+在完全二叉树中，任何一个子树的最大值都是这颗子树的头部
+
+```java
+public static void heapSort(int[] arr) {
+    if (arr == null || arr.length < 2) {
+        return;
+    }
+    for (int i = 0; i < arr.length; i++) {
+        heapInsert(arr, i);
+    }
+}
+
+public static void heapInsert(int[] arr, int index) {
+    while (arr[index] > arr[(index - 1) / 2]) {
+        swap(arr, index, (index - 1) / 2);
+        index =(index-1)/2;
+    }
+}
+```
+
+小根堆->完全二叉树
+
+任何一颗子树的最小值都是这颗子树的头部
+
+```java
+public static void heapSort(int[] arr) {
+    if (arr == null || arr.length < 2) {
+        return;
+    }
+    for (int i = 0; i < arr.length; i++) {
+        heapInsert(arr, i);
+    }
+}
+
+public static void heapInsert(int[] arr, int index) {
+    while (arr[index] < arr[(index - 1) / 2]) {
+        swap(arr, index, (index - 1) / 2);
+        index =(index-1)/2;
+    }
+}
+```
+
