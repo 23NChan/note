@@ -406,7 +406,7 @@ Set接口中有一个静态方法：
 
 我们存储的元素都是成对出现的，所以我们把Map看成是一个夫妻对的集合
 
-遍历思路
+遍历思路1：
 
 + 把所有的丈夫集中起来
 + 遍历丈夫的集合，获取每一个丈夫
@@ -417,3 +417,158 @@ Set接口中有一个静态方法：
 + 获取所有键的集合。用KeySet()方法实现
 + 遍历键的集合，获取到每一键。用增强for实现
 + 根据键去找值。用get(Obeject key)方法实现
+
+遍历思路2：
+
++ 获取所有结婚证的集合
++ 遍历结婚证的的集合，得到每一个接换证
++ 根据结婚证获取丈夫和妻子
+
+转换为Map集合中的操作：
+
++ 获取键值对对象的集合
+  + Set<Map.Entry<K,V>> entrySet()：获取所有键值对对象的集合
++ 遍历键值对对象的集合，得到每一个键值对对象
+  + 用增强for实现，得到每一个Map.Entry
++ 根据键值对对象获取键和值
+  + 用getkey()得到键
+  + 用getValue()得到值
+
+#### 案例：HashMap集合存储学生对象并遍历（1
+
+需求：创建一个HashMap集合，键是学号(String)，值是学生对象(Student)。存储三个键值对元素，并遍历
+
+思路：
+
+1. 定义学生类、
+
+2. 创建HashMap集合对象
+
+3. 创建学生对象
+
+4. 把学生添加到集合
+
+5. 遍历集合
+
+   方法1：键找值
+
+   方法2：键值对对象找键和值
+
+```java
+//创建HashMap集合对象
+HashMap<String, Student> hm = new HashMap<String, Student>();
+
+//创建学生对象
+Student s1 = new Student("宵宫", 18);
+Student s2 = new Student("新海", 20);
+Student s3 = new Student("砂糖", 16);
+
+//把学生添加到集合
+hm.put("tiwate001", s1);
+hm.put("tiwate002", s2);
+hm.put("tiwate003", s3);
+
+//遍历集合
+Set<String> keySet = hm.keySet();
+for (String key : keySet) {
+    Student value = hm.get(key);
+    System.out.println(key + "," + value.getName() + "," + value.getAge());
+
+}
+```
+
+#### 案例：HashMap集合存储学生对象并遍历（2
+
+需求：创建一个HashMap集合，键是学生对象(Student)，值是居住地(String)存储多个键值对元素，并遍历
+
+要求保证键的唯一性：如果学生对象的成员变量值相同，我们就认为是同一个对象
+
+思路：
+
+1. 定义学生类
+
+2. 创建HashMap集合对象
+
+3. 创建学生对象
+
+4. 把学生添加到集合
+
+5. 遍历集合
+
+6. 在学生类中创协两个方法
+
+   hashCode()
+
+   equals()
+
+   ```java
+   HashMap<Student, String> hm = new HashMap<Student, String>();
+   
+   Student s1 = new Student("宵宫", 18);
+   Student s2 = new Student("砂糖", 19);
+   Student s3 = new Student("钟离", 20);
+   Student s4 = new Student("钟离", 20);
+   
+   hm.put(s1, "稻妻");
+   hm.put(s2, "蒙德");
+   hm.put(s3, "璃月");
+   hm.put(s4, "提瓦特");
+   
+   Set<Student> keySet = hm.keySet();
+   
+   for (Student key : keySet) {
+       String value = hm.get(key);
+       System.out.println(key.getName() + "," + key.getAge() + "," + value);
+   }
+   ```
+
+#### 案例：ArrayList集合存储HashMap元素并遍历
+
+需求：创建一个ArrayList集合，存储三个元素，每一个HashMap的键和值都是String，并遍历
+
+思路：
+
+1. 创建ArrayList集合
+2. 创建HashMap集合，并添加键值对元素
+3. 把HashMap作为元素添加到ArrayList集合
+4. 遍历ArrayList集合
+
+```java
+//创建ArrayList集合
+ArrayList<HashMap<String, String>> array = new ArrayList<HashMap<String, String>>();
+
+//创建HashMap集合并添加键值对元素
+HashMap<String, String> hm1 = new HashMap<String, String>();
+hm1.put("孙策", "大乔");
+hm1.put("周瑜", "小乔");
+//把HashMap作为元素添加到ArrayList集合
+array.add(hm1);
+
+HashMap<String, String> hm2 = new HashMap<String, String>();
+hm2.put("郭靖", "黄蓉");
+hm2.put("杨过", "小龙女");
+//把HashMap作为元素添加到ArrayList集合
+array.add(hm2);
+
+HashMap<String, String> hm3 = new HashMap<String, String>();
+hm3.put("令狐冲", "任盈盈");
+hm3.put("林平之", "岳灵珊");
+//把HashMap作为元素添加到ArrayList集合
+array.add(hm3);
+
+//遍历ArrayList集合
+for (HashMap<String, String> hm : array) {
+    Set<String> keySet = hm.keySet();
+    for (String key : keySet) {
+        String value = hm.get(key);
+        System.out.println(key + "," + value);
+    }
+}
+```
+
+#### 案例：HashMap集合存储ArrayList元素并遍历
+
+需求：创建一个HashMap集合，存储三个键值对对象，每一个键值对元素的键是String，值是ArrayList
+
+每一个ArrayList的元素是String，并遍历
+
