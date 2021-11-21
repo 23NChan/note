@@ -1,5 +1,7 @@
 [TOC]
 
+## 集合体系结构
+
 ### Set
 
 #### Set集合概述和特点
@@ -571,4 +573,198 @@ for (HashMap<String, String> hm : array) {
 需求：创建一个HashMap集合，存储三个键值对对象，每一个键值对元素的键是String，值是ArrayList
 
 每一个ArrayList的元素是String，并遍历
+
+思路：
+
+1. 创建HashMap集合
+2. 创建ArrayList集合，并添加元素
+3. 把ArrayList作为元素添加到HashMap集合
+4. 遍历HashMap集合 
+
+```java
+HashMap<String, ArrayList<String>> hm = new HashMap<>();
+
+ArrayList<String> sgyy = new ArrayList<>();
+sgyy.add("诸葛亮");
+sgyy.add("赵云");
+hm.put("三国演义", sgyy);
+
+ArrayList<String> xyj = new ArrayList<>();
+xyj.add("唐僧");
+xyj.add("孙悟空");
+hm.put("西游记", xyj);
+
+ArrayList<String> shz = new ArrayList<>();
+shz.add("武松");
+shz.add("鲁智深");
+hm.put("水浒准", shz);
+
+Set<String> keySet = hm.keySet();
+for (String key : keySet) {
+    System.out.println(key);
+    ArrayList<String> value = hm.get(key);
+    for (String s : value) {
+        System.out.println("\t" + s);
+    }
+}
+```
+
+#### 案例：统计字符串中每个字符出现的次数
+
+需求：键盘录入一个字符串，要求统计字符串中每个字符出现的次数
+
+分析
+
+1. 我们可以把结果分成几个部分来看：a(5),b(4),c(3),d(2),e(1)
+
+2. 每个部分可以看成是：字符和字符对应的次数组成
+
+3. 这样的数据，我们可以通过HashMap集合来存储，键是字符，值是字符出现的次数
+
+   ​		注意：键是字符，类型应该是Character；值是字符出现的次数，类型应该是Integer
+
+思路
+
+1. 键盘录入一个字符串
+2. 创建HashMap集合，键是Character，值是Integer
+3. 遍历字符串，得到每一个字符
+4. 拿得到的每一个字符作为键到HashMap集合中去找对应的值，看其返回值
+   1. 如果返回值是null：说明该字符在HashMap集合中不存在，就把该字符作为键，1作为值存储
+   2. 如果返回值不是null：说明该字符在HashMap集合中存在，把该值加1，然后从新存储该字符和对应的值
+5. 遍历HashMap集合，的到键和值，按照要求进行拼接
+6. 输出结果
+
+```java 
+Scanner sc = new Scanner(System.in);
+System.out.println("请输入一个字符串");
+String line = sc.nextLine();
+
+HashMap<Character, Integer> hashMap = new HashMap<Character, Integer>();
+
+for(int i=0;i<line.length();i++){
+    char key = line.charAt(i);
+
+    Integer value = hashMap.get(key);
+
+    if (value==null){
+        hashMap.put(key,1);
+    }else{
+        value++;
+        hashMap.put(key,value);
+    }
+}
+StringBuilder sb = new StringBuilder();
+Set<Character> keySet = hashMap.keySet();
+for (Character key:keySet){
+    Integer value = hashMap.get(key);
+    sb.append(key).append("(").append(value).append(") ");
+}
+
+String result = sb.toString();
+System.out.println(result);
+```
+
+### Collections
+
+#### 	Collections类的概述
+
++ 是针对集合操作的工具类
+
+Collections类的常用方法
+
++ public static <T extends Comparable<? super T>> void sort(List<T> list):将指定的列表按升序排序
++ public static void reverse(List<?> list)：反转指定泪飙中元素的顺序
++ public static void shuffle(List<?> list)：使用默认的随机源随机排序指定的列表
+
+```java
+list.add(30);
+list.add(20);
+list.add(50);
+list.add(10);
+list.add(40);
+Collections.sort(list);
+System.out.println(list);   //[10, 20, 30, 40, 50]
+Collections.reverse(list);
+System.out.println(list);   //[50, 40, 30, 20, 10]
+Collections.shuffle(list);
+System.out.println(list);   //[40, 50, 10, 20, 30]
+```
+
+#### 案例：模拟斗地主
+
+需求：通过程序实现斗地主过程中的洗牌，发牌和看牌
+
+思路：
+
+1. 创建一个牌盒，也就是定义1一个1集合对象，用ArrayList集合实现
+2. 往牌盒里面装牌
+3. 洗牌，也就是把牌打散，用Collections的shuffle()方法实现
+4. 发牌，也就是遍历集合，给三个玩家发牌
+5. 看牌，也就是三个玩家分别遍历自己的牌
+
+```java
+public static void main(String[] args) {
+    //创建一个牌盒，也就是定义一个集合对象，用ArrayList集合实现
+    ArrayList<String> array = new ArrayList<String>();
+
+    //往牌盒里面装牌
+    /*
+        ♢2，♢3，♢4......♢K,♢A
+        ♧2,...
+        ♡2,...
+        ♤2,...
+        小王，大王
+     */
+    //定义花色数组
+    String[] colors = {"♢", "♧", "♡", "♤"};
+    //定义点数数组
+    String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    for (String color : colors) {
+        for (String number : numbers) {
+            array.add(color + number);
+        }
+    }
+    array.add("小王");
+    array.add("大王");
+
+    //洗牌
+    Collections.shuffle(array);
+
+    //发牌，给三个玩家
+    ArrayList<String> user1 = new ArrayList<>();
+    ArrayList<String> user2 = new ArrayList<>();
+    ArrayList<String> user3 = new ArrayList<>();
+    ArrayList<String> dz = new ArrayList<>();
+
+    for (int i = 0; i < array.size(); i++) {
+        String poker = array.get(i);
+
+        if (i >= array.size() - 3) {
+            dz.add(poker);
+        } else if (i % 3 == 0) {
+            user1.add(poker);
+        } else if (i % 3 == 1) {
+            user2.add(poker);
+        } else if (i % 3 == 2) {
+            user3.add(poker);
+        }
+    }
+
+    //看牌
+    lookPorker("宵宫",user1);
+    lookPorker("新海",user2);
+    lookPorker("彩鳞",user3);
+    lookPorker("底牌",dz);
+}
+
+//看牌的方法
+public static void lookPorker(String name,ArrayList<String> array){
+    System.out.print(name+ "的牌是：");
+    for (String poker:array){
+        System.out.print(poker+ "  ");
+    }
+    System.out.println();
+
+}
+```
 
