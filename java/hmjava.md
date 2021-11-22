@@ -768,3 +768,150 @@ public static void lookPorker(String name,ArrayList<String> array){
 }
 ```
 
+#### 案例：模拟斗地主升级版
+
+需求：通过程序实现斗地主过程中的洗牌，看牌和发牌。要求：对牌进行排序
+
+思路：
+
+1. 创建HashMap，键是编号，值是牌
+2. 创建ArrayList，存储编号
+3. 创建花色数组和点数数组
+4. 从0开始往HashMap里面存储编号，并存储对应的牌。同时往ArrayList里面存储编号
+5. 洗牌(洗的是编号)，用Collections的shuffle()方法实现
+6. 发牌(发的也是编号，为了保证编号是顺序的，创建TreeSet集合接收)
+7. 定义方法看牌(遍历TreeSet集合，获取编号，到HashMap集合找对应的牌)
+8. 调用看牌方法
+
+```java
+public static void main(String[] args) {
+    //创建HashMap集合
+    HashMap<Integer, String> hm = new HashMap<>();
+
+    //创建ArrayList集合
+    ArrayList<Integer> array = new ArrayList<>();
+
+    //定义花色数组
+    String[] colors = {"♢", "♧", "♡", "♤"};
+    //定义点数数组
+    String[] numbers = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+
+
+    //从0开始往HashMap里面存储编号，并存储对应的牌。同时往ArrayList里面存储编号
+    int index = 0;
+
+    for (String number : numbers) {
+        for (String color : colors) {
+            hm.put(index, color + number);
+            array.add(index);
+            index++;
+        }
+    }
+    hm.put(index, "小王");
+    array.add(index);
+    index++;
+    hm.put(index, "大王");
+    array.add(index);
+
+    //洗牌
+    Collections.shuffle(array);
+
+    //发牌
+    TreeSet<Integer> user1 = new TreeSet<>();
+    TreeSet<Integer> user2 = new TreeSet<>();
+    TreeSet<Integer> user3 = new TreeSet<>();
+    TreeSet<Integer> dp = new TreeSet<>();
+
+    for (int i = 0; i < array.size(); i++) {
+        int x = array.get(i);
+        if (i >= array.size() - 3) {
+            dp.add(x);
+        } else if (i % 3 == 0) {
+            user1.add(x);
+        } else if (i % 3 == 1) {
+            user2.add(x);
+        } else if (i % 3 == 2) {
+            user3.add(x);
+        }
+    }
+
+    //调用看牌方法
+    lookPoker("user1",user1,hm);
+    lookPoker("user2",user2,hm);
+    lookPoker("user2",user3,hm);
+    lookPoker("底牌",dp,hm);
+
+}
+
+public static void lookPoker(String name, TreeSet < Integer > ts, HashMap < Integer, String > hm ){
+    System.out.print(name+"的牌是： ");
+    for (Integer key:ts){
+        String poker=hm.get(key);
+        System.out.print(poker+"  ");
+    }
+    System.out.println();
+}
+```
+
+## IO流
+
+### File
+
+#### File类概述和构造方法
+
+File：它是文件和目录路径名的抽象表示
+
++ 文件和目录是可以通过File封装成对象的
++ 对于File而言，其封装的并不是一个真正存在的文件，仅仅是一个路径名而已。它可以是存在的，也可以是不存在的。将来是要通过具体的操作把这个路径的内容转换为具体存在的
+
+| 方法名                           | 说明                                                       |
+| -------------------------------- | ---------------------------------------------------------- |
+| File(String pathname)            | 通过将给定的路径名字符串转换为抽象路径名来创建新的File实例 |
+| File(String parent,String child) | 从父路径名字符串和子路径名字符串创建新的File实例           |
+| File(File parent,String child)   | 从父抽象路径名和子路径名字字符串创建新的File实例           |
+
+```java
+File f1 = new File("D:\\mc\\FileDemo\\java.txt");
+System.out.println(f1);
+
+File f2 = new File("D:\\mc\\FileDemo","java.txt");
+System.out.println(f2);
+
+File f3 = new File("D:\\mc\\FileDemo");
+File f4 = new File(f3,"java.txt");
+System.out.println(f4);
+```
+
+#### File类创建功能
+
+| 方法名                         | 说明                                                         |
+| ------------------------------ | ------------------------------------------------------------ |
+| public boolean createNewFile() | 当具有该名称的文件不存在时，创建一个由该抽象路径名命名的新空文件 |
+| public boolean mkdir()         | 创建由此抽象路径名命名的目录                                 |
+| public boolean mkdirs()        | 创建由此抽象路径名名命的目录，包括任何必须但不存在的父目录下 |
+
+```java
+File f1 = new File("D:\\mc\\FileDemo\\java.txt");
+System.out.println(f1.createNewFile());
+//如果文件不存在，就创建文件，并返回true
+//如果文件存在，就不创建文件，并返回false
+//如果存在同名文件夹，不创建文件，并返回false
+
+File f2 = new File("D:\\mc\\FileDemo\\JavaSe");
+System.out.println(f2.mkdir());
+//如果目录不存在，就创建目录，并返回true
+//如果目录存在，就不创建目录，并返回false
+//如果中间目录不存在,终止创建
+
+File f3 = new File("D:\\mc\\FileDemo\\java\\javaSE");
+System.out.println(f3.mkdirs());
+//如果目录不存在，就创建目录，并返回true
+//如果目录存在，就不创建目录，并返回false
+```
+
+
+
+
+
+# end
+
