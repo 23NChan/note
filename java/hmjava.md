@@ -909,7 +909,171 @@ System.out.println(f3.mkdirs());
 //如果目录存在，就不创建目录，并返回false
 ```
 
+#### File类判断和获取功能
 
+| 方法名                          | 说明                                                     |
+| ------------------------------- | -------------------------------------------------------- |
+| public boolean isDirectory()    | 测试此抽象路径名表示的File是否为目录                     |
+| public boolean isFile()         | 测试此抽象路径名表示的File是否为文件                     |
+| public boolean exists()         | 测试此抽象路径名表示的File是否存在                       |
+| public String getAbsolutePath() | 返回此抽象路径名的绝对路径名字符串                       |
+| public String getPath           | 将此抽象路径名转换为路径名字符串                         |
+| public String getName()         | 返回由此抽象路径名表示的文件或目录的名称                 |
+| public String[] list()          | 返回此抽象路径名表示的目录中的文件和目录的名称字符串数组 |
+| public File[] listFiles()       | 返回此抽象路径名表示的目录中的文件和目录的File对象数组   |
+
+```java
+File f = new File("D:\\mc\\FileDemo\\java.txt");
+
+System.out.println(f.isDirectory());
+System.out.println(f.isFile());
+System.out.println(f.exists());
+
+System.out.println(f.getAbsolutePath());
+System.out.println(f.getPath());
+System.out.println(f.getName());
+
+File f2 = new File("D:\\mc\\FileDemo");
+String[] strArray = f2.list();
+for (String str:strArray){
+    System.out.println(str);
+}
+System.out.println("----------------");
+File[] fileArray = f2.listFiles();
+for (File file:fileArray){
+    System.out.println(file);
+}
+```
+
+#### File类删除功能
+
+| 方法名                  | 说明                               |
+| ----------------------- | ---------------------------------- |
+| public boolean delete() | 删除由此抽象路径名表示的文件或目录 |
+
+相对路径和绝对路径的区别
+
++ 绝对路径：完整的路径名，不需要任何其他信息就可以定位它所表示的文件。
++ 相对路径：必须使用取自其他路径名的信息进行解释
+
+删除目录时的注意事项
+
++ 如果一个**目录中有内容**（内容，文件），**不能直接删除**，应该先删除目录中的人内容，最后才能删除目录
+
+```java
+        //需求1：在当前模块下创建java.txt文件
+        File f1 = new File("javaSE\\2021_11_22_IO流\\src\\FileDemo\\java1.txt");
+//        System.out.println(f1.createNewFile());
+
+        //需求2：删除当前模块目录下的java.txt文件
+//        System.out.println(f1.delete());
+        //需求3：在当前模块目录下创建itcast目录
+        File f2 = new File("javaSE\\2021_11_22_IO流\\src\\FileDemo\\itcast");
+//        System.out.println(f2.mkdir());
+
+        //需求4：删除当前目录下的itcast
+//        System.out.println(f2.delete());
+
+        //需求5：在当前模块下创建一个itcast，然后再该目录下创建一个文件java.txt
+        File f3=new File("javaSE\\2021_11_22_IO流\\src\\FileDemo\\itcast");
+//        System.out.println(f3.mkdir());
+        File f4=new File("javaSE\\2021_11_22_IO流\\src\\FileDemo\\itcast\\java.txt");
+//        System.out.println(f4.createNewFile());
+
+        //需求6：删除当前模块下的目录itcast
+        System.out.println(f3.delete()); //只能删除空目录
+```
+
+#### 递归
+
+递归概述：以编程的角度来看，递归指的是方法定义中调用方法本身的现象
+
+递归解决问题的思路：
+
++ 把一个复杂的问题层层转化为一个**与原问题相似的规模较小**的问题来求解
++ 递归策略只需**少量的程序**就可描述出解题过程所需要的多次重复计算
+
+递归解决问题要找两个内容：
+
++ 递归出口：否则会出现内存溢出
++ 递归原则：与原问题相似的规模较小的问题
+
+#### case:Traverse diretory
+
+案例：遍历目录
+
+需求：给定一个路径，通过递归完成遍历该目录下的所有内容，并把所有文件的绝对路径输出在控制台
+
+思路：
+
+1. 根据给定的路径创建一个File对象
+2. 定义一个方法，用于获取给定目录下的所有内容，参数为第一步创建的File对象
+3. 获取给定的File目录下所有的文件或者目录的File数组
+4. 遍历该File数组，得到每一个File对象
+5. 判断该File对象是否为目录
+   + 是，递归调用
+   + 不是，获取绝对路径输出在控制台
+6. 调用方法
+
+```java
+public static void main(String[] args) {
+    File file=new File("D:\\mc\\FileDemo");
+    getAllFilePath(file);
+}
+public static void getAllFilePath(File srcFile){
+    File[] fileArray = srcFile.listFiles();
+    if (fileArray !=null){
+        for (File file:fileArray){
+            if (file.isDirectory()){
+                getAllFilePath(file);
+            } else {
+                System.out.println(file.getAbsolutePath());
+            }
+        }
+    }
+}
+```
+
+### IO流的概述和分类
+
+#### IO流概述：
+
++ IO：输入/输出(Input/Output)
+
++ 流：是一种抽象概念，是对数据传输的总成，也就是说数据在设备间传输称为流，流的本质是数据传输
+
++ IO流就是用来出来设备间数据传输问题的
+
+  ​	常见的应用：文件复制；文件上传；文件下载
+
+#### IO流的分类：
+
++ ##### 按照数据的流向
+
+  + 输入流：读数据
+  + 输出流：写数据
+
++ ##### 按照数据类型来分
+
+  + 字节流
+
+    字节输入流；字节输出流
+
+  + 字符流
+
+    字符输入流；字符输出流
+
+一般来说，我们说IO流的分类是按照**数据类型**来分的
+
+### 字节流
+
+字节流抽象基类：
+
++ InputStream：所有字节输入流的超类
++ OutputStream：所有字节输出流的超类
++ 子类名特点：子类名称都是以其父类名作为子类名的后缀
+
+#### 字节流写数据
 
 
 

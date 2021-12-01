@@ -378,3 +378,103 @@ public static void heapInsert(int[] arr, int index) {
 }
 ```
 
+
+
+### Case
+
+#### Max左-Max右最大绝对值问题
+
+时间复杂度O(N)
+
+额外空间复杂度O(1)
+
+1. 找到全局最大Max
+2. 如果Max在左部分，尽量让右部分Max最小，只让右部分包含N-1位置数
+3. 如果Max在右部分，尽量让做部分Max最小，只让左部分包含0位置数
+
+
+```java
+public static void main(String[] args) {
+    int[] arr = {10, 20, 50, 20, 30, 30, 60, 10,5,70};
+    int num = AbsMax(arr);
+    System.out.println(num);
+}
+
+public static int AbsMax(int[] arr) {
+    int max = 0;
+    for (int i : arr) {
+        max = i > max ? i : max;
+    }
+    if (max == arr[0]) {
+        return max - arr[arr.length - 1];
+    } else if (max == arr[arr.length - 1]) {
+        return max - arr[0];
+    } else {
+        return Math.max(max-arr[0],max-arr[arr.length-1]);
+    }
+}
+```
+
+#### 子矩阵的最大累加和问题
+
+时间复杂度(N^2*M)
+
+额外空间复杂度(M)
+
+组数组最大累加和：
+
+1. 从左往右依次遍历每个数
+2. 把这个数累加到cur 
+3. 用max来捕获cur累加后的值，只要最大值
+4. if cur<0   --> cur=0,否则不变
+
+假设：
+
+1. 有一个子数组是累加和最大的子数组
+2. 在1.的条件下，长度最长
+3. 如果子数组开头是i，结尾时j
+   + 以i开头的到j结尾的前缀组数组累加和一定不小于零
+   + 以i-1为结尾的后缀累加和一定小于零
+
+把矩阵压缩成数组解决问题
+
+```java
+public class A02_SubMatrixMaxSum {
+    public static void main(String[] args) {
+        int[][] matrix={{-90,48,78},{64,-40,64},{-81,-7,66}};
+        System.out.println(maxSum(matrix));
+    }
+
+    public static int maxSum(int[][] m) {
+        if (m == null || m.length == 0 || m[0].length == 0) {
+            return 0;
+        }
+        int max = Integer.MIN_VALUE;
+        int cur = 0;
+        int[] s = null;
+        for (int i = 0; i != m.length; i++) {
+            s = new int[m[0].length];
+            for (int j = i; j != m.length; j++) {
+                cur = 0;
+                for (int k = 0; k != s.length; k++) {
+                    s[k] += m[j][k];
+                    cur += s[k];
+                    max = Math.max(cur, max);
+                    cur = cur < 0 ? 0 : cur;
+                }
+            }
+        }
+        return max;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+## end

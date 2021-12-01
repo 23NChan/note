@@ -23,5 +23,11 @@ graph TD;
 | git status | 查看工作区和暂存区的状态 |
 | git log    | 从最近到最远的提交日志   |
 
+git log --pretty=oneline
+
+git log --online
+
+git r
+
 
 
