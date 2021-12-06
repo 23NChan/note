@@ -1048,6 +1048,10 @@ public static void getAllFilePath(File srcFile){
 
 #### IO流的分类：
 
+所有的io操作最后都要释放资源
+
+void close()：关闭此文件输出流并释放与此流相关联的任何系统资源
+
 + ##### 按照数据的流向
 
   + 输入流：读数据
@@ -1074,6 +1078,155 @@ public static void getAllFilePath(File srcFile){
 + 子类名特点：子类名称都是以其父类名作为子类名的后缀
 
 #### 字节流写数据
+
+​	FileOutputStream
+
+| 方法                                  | 说明                                                         |
+| ------------------------------------- | ------------------------------------------------------------ |
+| FileOutputStream(String name)         | 创建文件输出流以指定名称写入文件                             |
+| void write(int b)                     | 将指定字节写入此文件输出流                                   |
+| void write(byte[] b)                  | 将b.length字节从指定的字节数组写入此文件输出流               |
+| void write(byte[] b,int off, int len) | 将len字节从指定的字节数组开始，从偏移量off开始写入此文件输出流一次写一个字节数组的部分数据 |
+
+使用字节输出流写数据的步骤：
+
++ 创建字节输出流对象（调用系统功能创建了文件，创建字节输出流对象，让字节输出流对象指向文件）
++ 调用字节输出流对象的写数据方法
++ 释放资源(关闭此文件输出流并释放与此流相关联的任何系统资源)
+
+```java
+FileOutputStream fos =new FileOutputStream("javaSE\\2021_11_22_IO流\\src\\FileOutputStreamDemo\\fos.txt");
+/*
+    做了三件事
+        1：调用系统功能创建了文件
+        2：创建了字节输出流对象
+        3：让字节输出流对象指向创建好的对象
+ */
+fos.write(97);  //a
+
+byte[] bys={97,98,99,100,101};
+fos.write(bys); //abcde
+
+byte[] bytes = "abcde".getBytes(StandardCharsets.UTF_8);
+fos.write(bytes); //abcde
+
+fos.write(bys,1,3); //bcd
+
+fos.close();
+```
+
+String类方法:
+
+| 方法                | 说明                     |
+| ------------------- | ------------------------ |
+| byte[] getBytes()： | 返回字符串对应的字节数组 |
+
+
+
+##### 字节流写数据的两个小问题
+
+###### 字节流写数据如何实现换行
+
++ 写完数据后，加换行符
+  + windows:\r\n
+  + linus:\n
+  + mac:\r
+
+```java
+for (int i=0;i<10;i++){
+    fos.write("hello".getBytes(StandardCharsets.UTF_8));
+    fos.write("\n".getBytes(StandardCharsets.UTF_8));
+}
+```
+
+###### 字节流写数据如何实现追加写入
+
++ public FileOutputStream(String name,boolean append)
++ 创建文件输出流以指定的名称写入文件。如果第二个参数为true，则表示字节将写入文件的末尾而不是开头
+
+```java
+FileOutputStream fos =new FileOutputStream("javaSE\\2021_11_22_IO流\\src\\FileOutputStreamDemo\\fos.txt",true);
+```
+
+##### 字节流写数据加异常处理
+
+finally：在异常处理时提供finally块来执行所有清楚操作。比如说IO流中释放资源
+
+特点：被finally控制的语句一定会执行，除非JVM退出
+
+```java
+try{
+	可能出现异常的代码;
+}catch(异常类名 变量名){
+	异常的处理代码;
+}finally{
+	执行所有清楚操作;
+}
+```
+
+```java
+FileOutputStream fos = null;
+try {
+    fos = new FileOutputStream("javaSE\\2021_11_22_IO流\\src\\FileOutputStreamDemo\\fos.txt", true);
+    fos.write("hello".getBytes(StandardCharsets.UTF_8));
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (fos !=null) {
+        try {
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+#### 字节流读数据
+
+需求：把文件fos.txt中的内容读取出来在控制台输出
+
+使用字节输入流读取数据的步骤：
+
+1. 创建字节输入流对象
+2. 调用字节输入流对象的读数据方法
+3. 释放资源
+
+| 方法                                  | 说明                                                         |
+| ------------------------------------- | ------------------------------------------------------------ |
+| FileInputStream(String name)          | 通过打开与实际文件的连接来创建一个FileInputStream,该文件由文件系统中的路径名 name命名。 |
+| int read()                            | 从该输入流读取一个字节的数据                                 |
+| int read(byte[] b)                    | 从该输入流读取最多 b.length个字节的数据到一个字节数组        |
+| int read(byte[] b, int off, int len)! | 从该输入流读取最多len个字节的数据到字节数组                  |
+
+```java
+        //调用字节输入流对象的读数据方法
+//        int by = fis.read();
+//        System.out.println(by); //97
+//        System.out.println((char)by); //a
+//        int by2 = fis.read(); //98
+//        System.out.println(by2);
+//        int by3 = fis.read(); //98
+//        System.out.println(by3); //-1
+        //如果达到文件的末尾返回-1
+        int by;
+        while ((by=fis.read()) != -1){
+            System.out.print((char) by);
+        }
+
+        //释放资源
+        try {
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+```
+
+
+
+
+
+
 
 
 
