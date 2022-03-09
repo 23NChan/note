@@ -26,7 +26,7 @@ classDiagram
 classDiagram
 
 a <|-- b
-a <|--
+a <|-- c
 class a{
 	int a;
 }
