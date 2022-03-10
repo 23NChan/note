@@ -2899,11 +2899,11 @@ public class Customer implements Runnable{
 
 InetAddress,此类表示Internet协议(IP)地址
 
-| 方法名                                    | 说明                                                         |
-| ----------------------------------------- | ------------------------------------------------------------ |
+| 方法名                                       | 说明                               |
+| ----------------------------------------- | -------------------------------- |
 | Static InetAddress getByName(String host) | 确定主机名称的IP地址。主机名称可以是及其名称，也可以是IP地址 |
-| String getHostName()                      | 获取此IP地址的主机名                                         |
-| String getHostAddress()                   | 返回文本显示中的IP地址字符串                                 |
+| String getHostName()                      | 获取此IP地址的主机名                      |
+| String getHostAddress()                   | 返回文本显示中的IP地址字符串                  |
 
 ```java
 public static void main(String[] args) throws UnknownHostException {
@@ -2939,27 +2939,27 @@ Java提供了**DatagramSocket**类作为基于UDP协议的Socket
 
 **DatagramSocket**
 
-| Constructor                                 | 描述                                                 |
-| ------------------------------------------- | ---------------------------------------------------- |
+| Constructor                                 | 描述                         |
+| ------------------------------------------- | -------------------------- |
 | DatagramSocket()                            | 构造数据报套接字并将其绑定到本地主机上的任何可用端口 |
-| DatagramSocket(int port)                    | 构造数据报套接字并将其绑定到本地主机上的指定端口     |
-| DatagramSocket(int port, InetAddress laddr) | 创建一个数据报套接字，绑定到指定的本地地址。         |
+| DatagramSocket(int port)                    | 构造数据报套接字并将其绑定到本地主机上的指定端口   |
+| DatagramSocket(int port, InetAddress laddr) | 创建一个数据报套接字，绑定到指定的本地地址。     |
 
-| 返回值 | 方法                      | 说明                   |
-| ------ | ------------------------- | ---------------------- |
-| void   | send(DatagramPacket p)    | 从此套接字发送数据报包 |
-| void   | receive(DatagramPacket p) | 从此套接字接收数据报包 |
+| 返回值  | 方法                        | 说明          |
+| ---- | ------------------------- | ----------- |
+| void | send(DatagramPacket p)    | 从此套接字发送数据报包 |
+| void | receive(DatagramPacket p) | 从此套接字接收数据报包 |
 
 **DatagramPacket**
 
-| Constructor                                                  | 描述                                                         |
-| :----------------------------------------------------------- | ------------------------------------------------------------ |
+| Constructor                                                   | 描述                                  |
+|:------------------------------------------------------------- | ----------------------------------- |
 | DatagramPacket(byte[] buf, int length, InetAddress, int port) | 构造一个数据包，发送长度为length的数据包到指定主机上的指定端口号 |
-| DatagramPacket(byte[] byf, int length)                       | 构造一个DatagramPacket用于接收长度为length的数据包           |
+| DatagramPacket(byte[] byf, int length)                        | 构造一个DatagramPacket用于接收长度为length的数据包 |
 
-| 返回值 | 方法        | 说明                                       |
-| ------ | ----------- | ------------------------------------------ |
-| byte[] | getData()   | 返回数据缓冲区                             |
+| 返回值    | 方法          | 说明                    |
+| ------ | ----------- | --------------------- |
+| byte[] | getData()   | 返回数据缓冲区               |
 | int    | getLength() | 返回要发送的数据的长度或接收到的数据的长度 |
 
 ##### UDP发送数据
@@ -3093,29 +3093,27 @@ Java为客户端提供了Socket类，为服务器端提供了SeverSocket类
 
 **Socket**
 
-| Constructor                           | 描述                                           |
-| ------------------------------------- | ---------------------------------------------- |
+| Constructor                           | 描述                       |
+| ------------------------------------- | ------------------------ |
 | Socket(InetAddress address, int port) | 创建流套接字并将其连接到指定IP地址的指定端口号 |
-| Socket(String host, int port)         | 创建流套接字并将其连接到指定主机上的指定端口号 |
+| Socket(String host, int port)         | 创建流套接字并将其连接到指定主机上的指定端口号  |
 
-| 返回值       | 方法             | 说明                               |
-| ------------ | ---------------- | ---------------------------------- |
-| OutputStream | getOutputStream  | 返回此套接字的输出流               |
-| InputStream  | getInputStream   | 返回此套接字的输入流               |
+| 返回值          | 方法               | 说明                 |
+| ------------ | ---------------- | ------------------ |
+| OutputStream | getOutputStream  | 返回此套接字的输出流         |
+| InputStream  | getInputStream   | 返回此套接字的输入流         |
 | void         | shutdownInput()  | 将此套接字的输入流放置在“流的末尾” |
-| void         | shutdownOutput() | 禁用此套接字的输出流               |
+| void         | shutdownOutput() | 禁用此套接字的输出流         |
 
 ServerSocket
 
-| Construtor             | 描述                             |
-| ---------------------- | -------------------------------- |
+| Construtor             | 描述               |
+| ---------------------- | ---------------- |
 | ServerSocket(int port) | 创建绑定到指定端口的服务器套接字 |
 
-| 返回值 | 方法     | 说明                         |
-| ------ | -------- | ---------------------------- |
+| 返回值    | 方法       | 说明             |
+| ------ | -------- | -------------- |
 | Socket | accept() | 侦听要连接到此套接字并接受它 |
-
-
 
 ##### TCP发送数据
 
@@ -3137,7 +3135,7 @@ ServerSocket
         //OutputStreamgetOutputStream返回此套接字的输出流
         OutputStream os = s.getOutputStream();
         os.write("hello,tcp,我来了".getBytes(StandardCharsets.UTF_8));
-        
+
         //释放资源
         s.close();
     }
@@ -3639,7 +3637,7 @@ useAddable((x, y) -> x + y);
 + 使用Lambda必须要有接口，并且要求接口有且只有一个抽象方法
 + 必须有上下文环境，才能推导出Lambda对应的接口
 
-``` java
+```java
 Runnable r = () -> System.out.println("Lambda表达式");
 new Thread(r).start();
 ```
@@ -3661,11 +3659,11 @@ new Thread(r).start();
 接口的组成
 
 + 常量
-
+  
   public static final
 
 + 抽象方法
-
+  
   public abstract
 
 + 默认方法(Java8)
@@ -3719,13 +3717,13 @@ new Thread(r).start();
 + ::该符号为引用运算符，而他所在的表达式被称为方法引用
 
 + Lambda表达式：usePrintable(s -> System.out.println(s));
-
+  
   分析：拿到参数s之后通过Lambda表达式，传递给System.out.println方法去处理
 
 + 方法引用：usePrintable(System.out::println);
-
+  
   分析：直接使用System.out中的println方法来取代Lambda, 代码更加的简洁
-
+  
   ```java
   public interface Printable{ {
       void printString(String s);
@@ -3768,20 +3766,20 @@ public class PrintableDemo {
 - 格式: 类名::静态方法
 
 - 范例: Integer::parseInt
-
-  ​	Integer类的方法:  public static int parseInt(String s)将此String 转换为int类型数据
+  
+  ​    Integer类的方法:  public static int parseInt(String s)将此String 转换为int类型数据
 
 练习:
 
 + 定义一个接口(Converter),里面定义一个抽象方法
-
-  ​	int convert(String s);
+  
+  ​    int convert(String s);
 
 + 定义一个测试类(ConverterDemo),在测试类中提供两个方法
-
-  ​	一个方法是:useConverter(Converter c)
-
-  ​	一个方法是主方法,在主方法中调用useConverter方法
+  
+  ​    一个方法是:useConverter(Converter c)
+  
+  ​    一个方法是主方法,在主方法中调用useConverter方法
 
 ```java
 public class ConvertDemo {
@@ -3807,24 +3805,24 @@ public class ConvertDemo {
 + 格式：对象::成员方法
 
 + 范例："helloWorld"::toUpperCase
-
-  ​		String类中的方法public String toUpperCase()将此Streing所有字符转换为大写
+  
+  ​        String类中的方法public String toUpperCase()将此Streing所有字符转换为大写
 
 练习
 
 + 定义一个类(PrintString)，里面定义一个方法
-
-  ​	public void printUpper(String s): 把字符串参数变成大写的数据，然后在控制台输出
+  
+  ​    public void printUpper(String s): 把字符串参数变成大写的数据，然后在控制台输出
 
 + 定义一个接口(Printer)，里面顶一个抽象方法
-
-  ​	void printUpperCase(String s)
+  
+  ​    void printUpperCase(String s)
 
 + 定义一个测试类(PrinterDemo)，在测试类中提供两个方法
-
-  ​	一个方法是：usePrinter(Printer p)
-
-  ​	一个方法是主方法，在主方法中调用usePrinter方法
+  
+  ​    一个方法是：usePrinter(Printer p)
+  
+  ​    一个方法是主方法，在主方法中调用usePrinter方法
 
 ```java
 public class PrinterDemo {
@@ -3849,22 +3847,22 @@ public class PrinterDemo {
 + 格式：类名::成员方法
 
 + 范例：String::subString
-
-  ​	String类中的方法：public String substring(int beginIndex,int endIndex)
-
-  ​	从beginIndex开始到endIndex结束，截取字符串。返回一个子串，子串的长度为endIndex-beginIndex
+  
+  ​    String类中的方法：public String substring(int beginIndex,int endIndex)
+  
+  ​    从beginIndex开始到endIndex结束，截取字符串。返回一个子串，子串的长度为endIndex-beginIndex
 
 练习
 
 + 定义一个接口(MyString)，里面定义一个抽象方法
-
-  ​	String mySubString(String s, int x, int y);
+  
+  ​    String mySubString(String s, int x, int y);
 
 + 定义一个测试类(MyStringDemo)，在测试类中提供两个方法
-
-  ​	一个方法是：useMyString(MyString my)
-
-  ​	一个方法是主方法，在主方法中调用useMyString方法
+  
+  ​    一个方法是：useMyString(MyString my)
+  
+  ​    一个方法是主方法，在主方法中调用useMyString方法
 
 ```java
 public class MyStringDemo {
@@ -3885,7 +3883,7 @@ public class MyStringDemo {
 }
 ```
 
-##### 引用构造器 
+##### 引用构造器
 
 引用构造器，其实就是引用构造方法
 
@@ -3895,18 +3893,18 @@ public class MyStringDemo {
 练习
 
 + 定义一个类(Student)，里面有两个成员方法(name, age)
-
-  ​	并提供无参构造方法和带参构造方法，以及成员变量对应的get和set方法
+  
+  ​    并提供无参构造方法和带参构造方法，以及成员变量对应的get和set方法
 
 + 定义一个接口(StudentBuilder)，里面定义一个抽象方法
-
-  ​	Student build(String name,int age);
+  
+  ​    Student build(String name,int age);
 
 + 定义一个测试类(StudentDemo)，在测试类中提供两个方法
-
-  ​	一个方法是：useStudentBuilder(StudentBuilder s)
-
-  ​	一个方法是主方法，在主方法中调用useStudentBuilder方法
+  
+  ​    一个方法是：useStudentBuilder(StudentBuilder s)
+  
+  ​    一个方法是主方法，在主方法中调用useStudentBuilder方法
 
 ```java
 public class StudentDemo {
@@ -3958,10 +3956,10 @@ public class MyInterfaceDemo {
 需求
 
 + 定义一个类(RunnableDemo)，在类中提供两个方法
-
-  ​	一个方法是：startThread(Runnable r)方法参数Runnable是一个函数式接	口
-
-  ​	一个方法是主方法，在主方法中调用startThread方法
+  
+  ​    一个方法是：startThread(Runnable r)方法参数Runnable是一个函数式接    口
+  
+  ​    一个方法是主方法，在主方法中调用startThread方法
 
 ```java
 public class RunnableDemo {
@@ -3975,8 +3973,8 @@ public class RunnableDemo {
         });
         startThread(()-> System.out.println(Thread.currentThread().getName()+"线程启动了"));
     }
-    
-    
+
+
     public static void startThread(Runnable r){
 //        Thread t = new Thread(r);
 //        t.start();
@@ -3996,10 +3994,10 @@ public class RunnableDemo {
 需求
 
 + 定义一个类(ComparatorDemo)，在类中提供两个方法
-
-  ​	一个方法是：Comparator<String> getComparator() 方法的返回值Comparator是一个函数式接口
-
-  ​	一个方法是主方法，在主方法中调用getComparator方法
+  
+  ​    一个方法是：Comparator<String> getComparator() 方法的返回值Comparator是一个函数式接口
+  
+  ​    一个方法是主方法，在主方法中调用getComparator方法
 
 ```java
 public class ComparatorDemo {
@@ -4162,12 +4160,12 @@ Predicate接口
 
 Predicate<T>：常用的四个方法
 
-| 返回值               | 方法名               | 说明                                                         |
-| -------------------- | -------------------- | ------------------------------------------------------------ |
+| 返回值                  | 方法名                  | 说明                                   |
+| -------------------- | -------------------- | ------------------------------------ |
 | boolean              | test(T t)            | 对给定的参数进行判断(判断逻辑由Lambda表达式实现)，返回一个布尔值 |
-| default Predicate<T> | nagate()             | 返回一个逻辑的否定，对应逻辑非                               |
-| default Predicate<T> | and(Predicate other) | 返回一个组合判断，对应短路与                                 |
-| default Predicate<T> | or(Predicate other)  | 返回一个组合判断，对应短路或                                 |
+| default Predicate<T> | nagate()             | 返回一个逻辑的否定，对应逻辑非                      |
+| default Predicate<T> | and(Predicate other) | 返回一个组合判断，对应短路与                       |
+| default Predicate<T> | or(Predicate other)  | 返回一个组合判断，对应短路或                       |
 
 Predicate<T>接口通常用于判断参数是否满足指定的条件
 
@@ -4244,9 +4242,9 @@ public class PredicateTest {
 
 Funtion常用的两个方法
 
-| 返回值              | 方法名                  | 说明                                                         |
-| ------------------- | ----------------------- | ------------------------------------------------------------ |
-| R                   | apply(T t)              | 将此函数应用于给定的参数                                     |
+| 返回值                 | 方法名                     | 说明                                   |
+| ------------------- | ----------------------- | ------------------------------------ |
+| R                   | apply(T t)              | 将此函数应用于给定的参数                         |
 | default<V> Function | andThen(Function after) | 返回一个组合函数，首相将该函数应用于输入，然后将after函数应用于结果 |
 
 Function<T,R>接口通常用于对参数进行处理，转换(处理逻辑由Lambda表达式实现)，然后返回一个新的值
@@ -4305,10 +4303,6 @@ public class FuncitonTest {
     }
 }
 ```
-
-
-
-
 
 # end
 

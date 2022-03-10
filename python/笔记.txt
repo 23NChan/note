@@ -1,0 +1,1560 @@
+import random     导入random模块
+
+import 模块 as 新名称
+from 模块 import 函数 as 新名称
+secret = random.randint(开始，结束)    包括开始和结束
+
+type()   显示括号中数据类型
+isinstance(数据，类型）      判断数据与类型是否一致  一致输出True 不一致输出False
+
+
+数值类型
+    数值
+        int整形
+        float浮点型
+    bool布尔型
+        True真
+        False假
+    str字符串          '内容'
+    list列表           [10, 20]
+    tuple元组          (10, 20)
+    set集合            {10, 20}
+    dict字典
+
+complex复数
+例如   1.5 + 0.5j
+可以使用real 与 imag 属性分别取出复数的实数与虚数部分
+
+例如将 a 的实数部分和虚数部分分别赋值给 b 和 c
+a = 2.6 + 1.3j
+b = a.real
+c = a.imag
+
+可以使用complex(real ,imag) 将real 和imag 两个数值转换为负数
+如
+complex(1.3 ,2.6)
+(1.3 + 2.6j)
+
+
+
+格式符号
+%s 字符串                  %d 有符号的十进制整数            %f 浮点数
+%c 字符                    %u 无符号的十进制整数            %o 八进制整数
+%x 十六进制整数（小写ox）    %X 十六进制整数（大写OX）        %e 科学计数法（小写e）
+%E 科学计数法（大写E）       %g %f和%e的简写                %G %f和%E的简写
+
+
+age = 18
+name = 'tom'
+weight = 75.5
+stu_id = 1
+
+print('今年我的年龄是%d岁' % age)
+print('我的名字是%s' % name)
+print('我的体重是%.2f公斤' % weight)  #%后.2表示保留两位小数
+print('我的学号是%03d' % stu_id )     #03 表示输出三位数不足补0
+print('我的名字是%s,今年%d岁了' %( name, age) )
+print('我的名字是%s' % name, '今年%d岁了' % age)
+print('我的名字是%s,明年%d岁了' %( name, age + 1) )
+
+print(f'字符串{变量}')     # 也可格式化输出字符串
+
+print('输出的内容' , sep' ' , end='\n')
+
+sep用于设置多个要输出信息之间的分隔符默认为一个空格
+end是一个print函数中所有要输出信息之后增加的符号，默认值为换行符
+
+
+
+换衣字符
+\n  换行
+\t  制表符，一个tab建（4个空格的距离）
+
+
+
+input 接收到的数据类型都是字符串         当程序执行到input时等待用户输入，输入完成后才继续向下执行
+
+a = input('输入数据:')
+print(a)
+
+print(type(int(a)))     转变数据类型并输出类型
+
+
+  float()
+num1 = 1
+print(type(float(num1)))
+
+
+  tuple()
+list1 = [10, 20, 30]
+print(tuple(list1))  将序列转化为元组
+
+
+  list()
+t1 = (10, 20, 30)
+print(list(t1))      将序列转化为列表
+
+
+  eval               把字符串里面的数据转换其原本类型
+str1 ='1'
+str2 ='1.1'
+str3 ='(10, 20, 30)'
+str4 ='[10, 20, 30]'
+print(type(eval(str1)))
+print(type(eval(str2)))
+print(type(eval(str3)))
+print(type(eval(str4)))
+
+
++ 加  - 减
+* 乘  / 除
+// 整除  % 求余
+** 指数
+()小括号
+
+
+a = b = c = d = 1                           多变量赋值
+num1 , num2 , num3 = 1 , 2 , 3
+
+
++=   c += a 等价于c = c + a          ※ 先计算等号右面的表达式
+-=   c -= a 等价于c = c - a
+*=   c *= a 等价于c = c * a
+/=   c /= a 等价于c = c / a
+//=  c // = a 等价于c = c//a
+%=   c % = a 等价于c = c % a
+**=  c ** = a 等价于c = c ** a
+
+
+比较运算符也叫关系运算符
+==  判断相等       则为真否则为假
+！= 不相等         则为真否则为假
+>   左大于右       则为真否则为假
+<   左小于右       则为真否则为假
+>=  左大于等于右    则为真否则为假
+<=  左小于等于右    则为真否则为假
+
+
+逻辑运算符
+and  与    同真为真
+or   或    同假为假
+not  非
+
+
+条件语句
+if 条件1:
+    条件1成立执行的代码 1
+
+elif 条件2:
+    条件2成立执行的代码
+
+else:
+    条件不成立执行的代码
+
+多重判断也可以和else配合使用。一般else放到整个if语句的最后，白哦是以上条件都不成立的时候执行的代码。
+
+
+
+三目运算符
+条件成立表达式 if 条件 else 条件不成立表达式
+
+
+while 条件 :            当条件成立执行循环体
+    循环体              执行完成后继续判断条件
+else:
+    循环正常结束之后要执行的代码      如果是break终止循环，else下方缩进的代码不执行
+                                   如果加入了continue 不影响else下方缩进代码执行
+
+
+break   退出循环    退出当前函数
+continue     结束当前一次循环  执行下一次循环                执行continue之前必须改变条件变量
+
+
+
+for 临时变量 in 序列:
+    重复执行
+    的
+    代码块
+else：
+    循环正常结束之后执行的代码                  遇到break和continue时与while同理
+
+
+
+下标
+
+例
+str1 = 'abcdefg'
+print(str1[0])         输出str1 字符串的第一个字符
+
+切片
+
+序列[开始位置下标:结束位置下标:步长]              左闭右开
+不包含结束位置下表对应的数据，正负整数均可
+步长是选取间隔，正负整数均可，默认步长为1
+开始默认0  结束默认  所有
+
+例
+str1 = '0123456789'
+print(str1[2:5:1])    # 234
+print(str1[2:5:2])    # 24
+print(str1[:])        # 0123456789
+print(str1[::-1])     # 9876543210        步长为-1表倒叙
+print(str1[-4:-1])    # 678               -1 表最后一个数据，依次向前类推
+print(str1[-4:-1:-1]) # 不能选取数据 ，从-4开始到-1结束，选取方向从左到右侧，但-1步长，从右向左选取
+***********如果选取方向 和 补偿方向冲突，就无法选取数据************
+
+
+
+字符串常用操作
+
+
+查找
+所谓字符串查找方法即是查找子串在字符串中的位置或出现次数
+
+find()   检查某个字串是否高喊在这个字符串中，如果在返回这个子串  开始  的位置下标，否则则   返回-1
+字符串序列.find(子串 束始位置下标，结位置下标)     开始和结束可以省略，表示在整个字符串序列中查找
+
+
+index()  检查某个字串是否高喊在这个字符串中，如果在返回这个子串  开始  的位置下标，否则则   报错
+字符串序列.index(子串，开始位置下标，结束位置下标)
+
+
+rfind()    和find()功能相同，但查找方向是从右侧开始
+rindex()   和index()功能相同，但查找方向是从右侧开始
+
+
+count()  检查某个字串在字符串中出现的次数
+字符串序列.count(字串，开始位置下标，结束位置下标)
+
+
+修改
+replace()    替换
+字符串序列.replace(旧字串，新字串，替换次数)    替换次数默认为全部替换
+原字符串不会修改，返回值为修改后数据
+
+
+split()      分割      返回一个列表
+字符串序列.split(分割字符，num)
+num表示分割字符出现的次数，     即将来返回数据数为num+1个  默认为分割所有     会丢失分割字符
+
+join()       合并
+链接字符或子串.join(多字符串组成的序列)
+用一个字符或子串合并字符串，即是将多个字符串合并为一个新的字符串
+
+
+字符串序列.capitalize()   将字符串第一个字符转换成大写
+字符串序列.title()        每个单词都变成大写
+字符串序列.lower()        大写转小写
+字符串序列.upper()        小写转大写
+
+字符串序列.lstrip()            删除字符串左侧空白字符
+字符串序列.rstrip()            删除字符串右侧空白字符
+字符串序列.strip()             删除字符串两侧空白字符
+
+
+
+ljust()       返回一个原字符串左对齐，并使用指定字符(默认空格)填充至对应长度的新字符串。
+字符串序列.ljust(长度， 填充字符)
+字符串序列rjust()     右对齐
+字符串序列center()    中间对齐
+
+
+判断
+
+
+startswith()   检查字符串是否以指定子串开头，是则返回True，否则返回False   可以指定检查范围
+
+字符串序列.startswith(子串，开始位置下标，结束位置下标)
+
+endswith()     检查字符串是否以指定字串结尾
+
+
+isalpha()      如果一个非空字符串中只包含字母或汉字，则返回True，否则返回Fals
+isdigit()      如果字符串只包含数字
+isalnum()      如果一个非空字符串所有字符都是字母或数字
+isspace()      如果字符串只包含空白
+
+
+
+列表
+
+[数据1，数据2，数据3， ......]
+列表可以存储多个数据，且可以为不同数据类型
+
+
+查找
+
+name_list = ['Tom','Lily','Rose']
+print(name_list[0])           Tom
+print(name_list[1])           Lily
+print(name_list[2])           Rose
+
+
+index()       返回指定数据所在位置下标
+列表序列.index(数据，开始位置下标，结束位置下标)
+
+count         统计指定数据在当前列表中出现的次数
+列表序列.count(数据)
+在列表中与字符串不同无法指定检查区域
+
+len()         访问列表长度，即列表中数据的个数   用到字符串中检查字符串字符个数包括空格
+
+
+
+
+判断
+
+in           判断指定的数据在某个列表当中  在返回True    ,否则返回False
+
+name_list = ['Tom','Lily','Rose']
+print('Tom' in name_list)                  True
+print('Toms' in name_list)                 False
+
+
+
+not in       判断指定数据不在某个列表中   不在返回False    否则返回False
+
+name_list = ['Tom','Lily','Rose']
+print('Tom' not in name_list)                  False
+print('Toms' not in name_list)                 True
+
+
+增加
+
+append()      列表结尾追加数据  如果追加的数据是一个序列，则追加整个序列到列表
+列表序列.apped(数据)
+
+name_list = ['TOM','Lily','ROSE']
+name_list.append([11,22])
+print(name_list)
+# 结果['TOM', 'Lily', 'ROSE', [11, 22]]      列表可变类型
+
+
+extend()    列表结尾追加数据，如果数据是一个序列，则将这个序列的数据  逐一增加到列表
+列表序列.extend(数据)
+
+name_list = ['TOM','Lily','ROSE']
+name_list.extend('xiaoming')
+print(name_list)
+# 结果['TOM', 'Lily', 'ROSE', 'x', 'i', 'a', 'o', 'm', 'i', 'n', 'g']      列表可变类型
+
+
+insert()      指定位置新增数据        如果是一个数据序列，则追加整个序列到列表
+列表序列.insert(位置下标，数据)
+
+name_list = ['TOM','Lily','ROSE']
+name_list.insert(5,'xiaoming')
+print(name_list)
+# 结果 ['TOM', 'Lily', 'ROSE', 'xiaoming']
+
+name_list = ['TOM','Lily','ROSE']
+name_list.insert(1,'xiaoming')
+print(name_list)
+# 结果 ['TOM', 'xiaoming', 'Lily', 'ROSE']
+
+
+删除
+
+del
+del 目标       删除目标             del可以删除指定下标的数据
+
+name_list = ['TOM','Lily','ROSE']
+del name_list
+print(name_list)     报错 name_list不存在
+
+name_list = ['TOM','Lily','ROSE']
+del name_list[0]
+print(name_list)
+# 结果 ['Lily', 'ROSE']
+
+
+pop()        删除指定下标的数据(默认最后一个),并返回这个被删除的数据数据           把数据抽取出来
+列表序列.pop(下标）
+
+name_list = ['TOM','Lily','ROSE']
+a = name_list.pop()
+print(name_list,a) 
+# 结果 ['TOM', 'Lily'] ROSE
+
+
+remove()     移除列表中某个数据的第一个匹配项
+列表序列.remove(数据)
+
+name_list = ['TOM','Lily','ROSE']
+name_list.remove('ROSE')
+print(name_list)
+# 结果 ['TOM', 'Lily']
+
+
+clear()      清空列表
+
+name_list = ['TOM','Lily','ROSE']
+name_list.clear()
+print(name_list)
+# 结果 []
+
+修改
+
+修改指定下下标的数据
+
+列表序列[下标] = 赋值
+
+name_list = ['TOM','Lily','ROSE']
+name_list[0] = 'aaa'
+print(name_list)
+结果 ['aaa', 'Lily', 'ROSE']
+
+
+reverse()     逆序
+
+list1 = [0,1,2,3,4,5]
+list1.reverse()
+print(list1)
+结果 [5, 4, 3, 2, 1, 0]
+
+
+sort()        排序
+列表序列.sort(key=None, reverse=False)
+reverse = Ture 降序   reverse = False  升序（默认）
+
+list1 = [0,5,2,4,3,1]
+list1.sort()
+print(list1)
+结果  [0, 1, 2, 3, 4, 5]
+
+list1 = [0,5,2,4,3,1]
+list1.sort(reverse=True)
+print(list1)
+结果  [5, 4, 3, 2, 1, 0]
+
+
+递推式构造列表
+
+例
+aa="ab"
+bb=[1,2,3]
+cc=[(x,y) for x in aa for y in bb]
+print(cc)   结果  [('a', 1), ('a', 2), ('a', 3), ('b', 1), ('b', 2), ('b', 3)]
+
+
+aa="ab"
+bb=[1,2,3]
+cc=[[x,y] for x in aa for y in bb]
+print(cc)   结果  [['a', 1], ['a', 2], ['a', 3], ['b', 1], ['b', 2], ['b', 3]]
+
+地推构造列表的结果会随着  表达式定界符的改变而改变类型
+
+
+复制
+
+copy()
+
+
+列表循环遍历
+while
+
+name_list = ['TOM','Lily','ROSE']
+i = 0
+while i < len(name_list):
+    print(name_list[i])
+    i += 1
+
+
+for
+
+name_list = ['TOM','Lily','ROSE']
+for i in name_list:
+    print(i)
+
+列表嵌套
+name_list = [['TOM', 'lily', 'ROSE'], ['张三', '李四', '王五'], ['小红', '小红', '小绿']]
+print(name_list[0][0])
+结果   TOM
+
+
+元组              元组中的数据不可以修改   逗号隔开的数据可以是不同类型的
+定义元组     例:  ti = (10, 20, 30)       定义元组时如果只有一个数据 后面必须加一个逗号
+
+因为元组不支持修改，所以只支持查找操作
+
+按下标查找
+tuple1('aa', 'bb', 'cc')
+print(tuple1[0])            结果 aa
+
+index()         不存在则报错
+tuple1('aa', 'bb', 'cc')
+print(tuple1.index('aa'))
+
+count()         统计某个数据的出现次数
+元组名称.count(数据)
+
+len()           统计元组中数据的的个数
+
+
+元组可以结合得出新的元组
+cc=aa+bb
+
+如果元组里面有列表，修改列表里面的数据则是支持的
+例如
+ti = ('aa', ['bb', 'ee', 'ff'], 'cc', 'dd')
+print(ti[1])            访问元组中的列表
+结果 ['bb', 'ee', 'ff']
+
+ti = ('aa', ['bb', 'ee', 'ff'], 'cc', 'dd')
+ti[1][0] = 'gg'
+print(ti[1])    结果  ['gg', 'ee', 'ff']
+
+
+字典
+符号为大括号
+数据为键值对形式
+各个键值对之间用逗号隔开
+可修改可增减 没有下标
+
+创建字典
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+
+dict2 = {}
+dict3 = dict()
+
+增
+字典序列[key] = 值     k存在则修改 不存在则新增
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+dict1['name'] = 'Rose'
+dict1['id'] = 110
+print(dict1)        结果 {'name': 'Rose', 'age': 20, 'gender': '男', 'id': 110}
+
+删
+del    删除字典或删除字典中指定的键值对
+del 字典序列 或 字典键值对
+
+clear()   清空列表
+字典序列.clear()
+
+查
+key值查找
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1['name'])            输出  'Tom'
+print(dict1['id'])              结果   报错
+
+
+get()
+字典序列.get(key, 默认值)          如果key不存在则返回第二个参数，如果省略默认值，则返回None
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1.get('name'))            结果  Tom
+print(dict1.get('id', 110))               110
+print(dict1.get('id'))                    None
+
+
+keys()
+字典序列.keys()                     查找字典中所有的key  返回可迭代的对象
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1.keys())             结果  dict_keys(['name', 'age', 'gender'])
+
+
+values()
+字典序列.values()                   查找字典中所有的value   返回可迭代对象
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1.values())           结果  dict_values(['Tom', 20, '男'])
+
+
+items()
+字典序列.items()                    查找字典中所有键值对  返回可迭代对象 里面的数据是元组，元组数据1是key 元组数据2是values
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+print(dict1.items())            结果  dict_items([('name', 'Tom'), ('age', 20), ('gender', '男')])
+
+
+遍历字典
+
+key
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for key in dict1.keys():
+    print(key)
+
+结果
+name
+age
+gender
+
+
+value
+
+同上
+
+
+遍历键值对  item
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for item in dict1.items() :
+    print(item)
+
+    结果 ('name', 'Tom')
+         ('age', 20)
+         ('gender', '男')
+
+dict1 = {'name': 'Tom', 'age': 20, 'gender': '男'}
+for key, value  in dict1.items() :
+    print(f'{key} = {value}')
+
+    结果
+        name = Tom
+        age = 20
+        gender = 男
+
+
+集合
+
+    特点
+        自动去除重复数据
+        集合数据没有顺序不支持下标操作
+
+    创建集合
+        s1 = {10, 20}
+        s2 = set()
+        s3 = set('abcdefg')
+            {'a', 'f', 'd', 'g', 'c', 'b', 'e'}
+
+    增加数据
+        add()
+            集合.add(数据)       只能追加单一数据 否则报错
+        update()
+            集合.update(数据)    增加的是数据序列 逐个增加 不能增加单一数据
+
+    删除数据
+        remove()    删除集合中指定数据 如果数据不存在则报错
+            集合.remove(数据)
+        discard()   删除集合中指定数据 如果数据不存在也不报错
+            集合.discard(数据)
+        pop()       随即删除数据 并返回
+            集合.pop()
+
+    查找数据        判断是否存在
+        in
+        not in
+
+
+公共操作-----------------------------------------------------------------------------------------------------------------
+
+    运算符
+        +           合并              字符串 列表 元组
+        *           复制              字符串 列表 元组
+        in          元素是否存在       字符串 列表 元组 字典
+        not in      元素是否不存在     字符串 列表 元组 字典
+
+    函数
+        len()                   计算容器中元素个数
+        del或del()              删除
+        max()                   返回容器中元素的最大值
+        min()                   返回容器中元素的最小值
+        range(start,end,step)   生成从start到end的数字，步长为step，供for循环使用
+        enumerate()             函数用于将一个可遍历的数据对象(如列表，元组或字符串)组合为一个索引序列，同时列出数据和数据的下标，一般用在for循环当中
+            enumerate(可遍历对象, start=0)     start参数用来设置便利数据的初始值，默认为0
+
+                list1 = ['a','b','c','d']
+                    for i in enumerate(list1):
+                        print(i)
+                            (0, 'a')
+                            (1, 'b')
+                            (2, 'c')
+                            (3, 'd')
+
+                list1 = ['a','b','c','d']
+                    for i,j in enumerate(list1):
+                        print(i,j)
+                            0 a
+                            1 b
+                            2 c
+                            3 d
+
+    容器类型转换              并不改变原数据
+        tuple(数据序列)     转换成元组
+        list(数据序列)      转换成列表
+        set(数据序列)       转换成集合
+
+    推导式             适用于 列表 字典 集合
+        列表
+            用一个表达式创建一个有规律的列表或控制一个有规律的里列表
+
+            for
+                list = [i for i in range(10)]
+                    结果  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+            for + if
+                list = [i for i in range(10) if i % 2 == 0]
+                    结果  [0, 2, 4, 6, 8]
+
+            多重 for
+                list = [(i,j) for i in range(1,3) for j in range(3)]
+                    结果  [(1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+
+        字典
+            快速合并列表为字典或提起字典中目标数据
+
+            for
+                dict1 = {i: i**2 for i in range(5)}
+                    结果  {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+            合并列表
+                list1 = ['name', 'age', 'gender']
+                list2 = ['Tom', 20, 'man']
+                dict1 = {list1[i]: list2[i] for i in range(len(list1)) }
+                    结果  {'name': 'Tom', 'age': 20, 'gender': 'man'}
+
+            提取字典中目标数据
+                counts = {'MBP': 268, 'HP': 125, 'DELL': 201, 'Lenovo': 199, 'acer': 99}
+                count1 = {key: value for key,value in counts.items if value >= 200}
+                    结果  {'MBP': 268, 'DELL': 201}
+
+        集合
+            list1 = [1,2,1]
+            set1 = {i ** 2 for i in list1}
+                结果  {1, 4}
+
+
+函数--------------------------------------------------------------------------------------------------------------------
+    定义函数
+        def 函数名(参数):
+            代码1
+            代码2
+            .....
+
+    调用函数
+        函数名(参数)
+
+    return
+        负责函数返回值
+        退出当前函数，导致return下方（函数体内）的所有代码不执行
+
+    说明文档
+        def 函数名(参数)
+            '''说明文档'''
+            函数体
+
+        help(函数名)   查看函数的说明文档
+
+    嵌套调用
+        例 1
+        def print_line():
+            print('-' * 20)
+
+        def print_lines(num):
+            i = 0
+            while i < num:
+                print_line()
+                i += 1
+
+        例 2
+        def sum_num(a, b, c):
+            return a + b + c
+
+        def average_num(a, b, c):
+            sumResult = sum_num(a, b, c)
+            return  sumResult / 3
+
+    变量的作用域
+        局部变量
+            所畏惧变量是定义在函数体内部的变量，即旨在函数体内部生效
+            在函数体内部，临时保存数据，即函数调用完后，则销毁局部变量
+        全局变量
+            虽为全是那句变量，指在函数体内，外都能生效的变量
+
+            如果在函数体内修改全局变量
+            需要用global 声明
+            例如
+                a = 100
+                def testA():
+                    print(a)
+                def testB():
+                    global a
+                    a = 200
+                    print(a)
+
+                testA()
+                testB()
+                print(a)
+
+    多个返回值
+        return a, b      # （1，2）
+        返回多个数据的时候，默认是元组类型
+        return后面可以链接列表， 元组或字典，一返回多个值
+
+
+    函数参数
+
+        位置参数
+            调用时根据函数定义的参数位置来传递参数
+            传递和定义参数的顺序及个数必须一致
+
+        关键字参数
+            函数调用，通过"键=值"形式加以指定。可以让函数更加清晰、容易使用，同时也清楚了参数的顺序需求
+            果有位置参数，位置参数必须在关键字参数的前面，但关键字参数之间不存在先后顺序
+
+        缺省参数
+            缺省参数也称默认参数，用于定义函数，我为参数提供默认值，调用函数时可不传该默认参数的值
+            所有位置参数必须出现在默认参数前
+
+        不定长参数
+            定长参数也叫可变参数，用于不确定调用的时候会传输多少个参数的场景
+
+            包裹位置传递
+            例
+            def user_info(*args):
+                print(args)
+
+            user_info('Tom')
+            user_info('Tom', 18)
+            结果  ('Tom',)
+                 ('Tom', 18)
+
+
+            包裹关键字传递
+            例
+            def user_info(**kwargs):
+                print(kwargs)
+            user_info(name="Tom", age=18, id=110)
+            结果  {'name': 'Tom', 'age': 18, 'id': 110}
+    拆包和交换变量值
+        元组
+            def return_num():
+                return 100, 200
+            num1,num2 = return_num()
+            print(num1, num2)
+            结果  100 200
+
+        字典
+            dict1 = {'name' :'Tom', 'age' :18}
+            a,b = dict1
+            print(a, b, dict1[a], dict1[b])
+            结果  name age Tom 18
+
+    交换变量的值
+        借助第三变量存储
+        c = 0
+        c = a
+        a = b
+        b = c
+
+        方法二
+        a, b = 1, 2
+        a, b = b, a
+
+    引用
+    了解引用
+        在python中，值都是靠引用来传递的
+        我们可以用id()来判断两个变量是否为用一个值得引用。我们可以将id理解为那块内存的地址标识
+
+        int类型
+
+        a = 1
+        b = a
+        print(b)
+        print(id(a))
+        print(id(b))
+        a = 2
+        print(id(a))
+        print(id(b))
+        结果 140708370503328
+             140708370503328
+             140708370503360
+             140708370503328
+
+
+        可变类型
+
+        a = [1, 2, 3]
+        b = a
+        print(id(a))
+        print(id(b))
+        a.append(4)
+        print(b)
+        print(id(a))
+        print(id(b))
+        结果 2357037949504
+            2357037949504
+            [1, 2, 3, 4]
+            2357037949504
+            2357037949504
+
+        a = [1, 2, 3]
+        b = a.copy()
+        print(id(a))
+        print(id(b))
+        a.append(4)
+        print(b)
+        print(id(a))
+        print(id(b))
+        结果 2357295440448
+            2357295477376
+            [1, 2, 3]
+            2357295440448
+            2357295477376
+
+    引用当作参数
+        def test1(a):
+            print(a)
+            print(id(a))
+            a +=a
+            print(a)
+            print(id(a))
+
+        b = 10
+        test1(b)   # 两次id不同
+
+        c = [10, 20]
+        test1(c)   # 两次id相同
+
+    可变类型
+        列表  字典  集合
+    不可变类型
+        整形  浮点型  字符串  元组
+
+
+
+递归特点：函数内部自己调用自己：必须有出口
+
+匿名函数
+lambda 表达式
+    lambda 参数列表 : 表达式
+
+    如果一个函数有一个返回值，并且只有一句代码，可以使用lambda简化
+
+    无参数
+        fn1 = lambda: 100
+
+    一个参数
+        fn1 = lambda a:a
+        print(fn1('hello world'))
+
+    默认参数
+        fn1 = lambda a, b, c=100 : a + b + c
+        print(fn1(10, 20)
+
+    可变参数 *args
+        fn1 = lambda *args: args
+        print(fn1(10, 20, 30))
+
+    可变参数 **kwargs
+        fn1 = lambda **kwargs :kwargs
+        print(fn1(name='python', age=20)
+
+
+    lambda的应用
+        带判断的lambda
+            fn1 = lambda a,b: a if a > b elase b
+            print(fn1(1000, 500))
+
+        列表数据按字典key的值排序
+            students=[{'name': 'TOM', 'age': 20}, {'name': 'ROSE', 'age': 19}, {'name': 'Jack', 'age'  22}]
+            # 按name值升序排序
+            students.sort(key=lambda x: x['name']
+            print(students)
+            # 按name值降序排序
+            students.sort(key=lambda x: x['name'], reverse=True)
+            print(students)
+
+
+高阶函数
+把函数作为参数传入，这样的函数成为高阶函数，高阶函数是函数式编程的体现。函数式编程就是指这种高度抽象的编程范式。
+
+    abs() 求绝对值
+    round() 四舍五入
+
+    方法一
+        def add_num(a, b): 
+            return abs(a) + abs(b)
+
+        result = add_num(-1, 2)
+        print(result)  # 3
+
+
+    方法二
+        def sum_num(a, b, f)
+            return f(a) + f(b)
+
+        result = sum_num(-1, 2, abs)
+        print(result) # 3
+
+
+    内置高阶函数
+        map()
+            map(func,lst),将传入的函数变量func作用到lst变量的每个元素中，并经结果组成新的列表
+            
+                list1 = [1, 2, 3, 4, 5]
+
+
+                def func(x):
+                    return x ** 2
+
+
+                result = map(func, list1)
+
+                print(result)  # <map object at 0x004DA4F0>
+                print(list(result))  # [1, 4, 9, 16, 25]
+
+        reduce()
+            reduce(func, lst),其中func必须有两个参数。每次func计算的结果继续和序列的下一个元素做累计计算。
+            注： reduce()传入的参数func必须接收2个参数
+
+            import functools
+
+            list1 = [1, 2, 3, 4, 5]
+
+
+            def func(a, b):
+                return a + b
+
+
+            result = functools.reduce(func, list1)
+
+            print(result)
+
+        filter()
+            filter(func, lst)函数用于过滤序列，过滤掉不符合条件的元素，返回一个filter对象。如果要转换为列表可以使用list()来转换
+
+            list1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+
+            def func(x):
+                return x % 2 == 0
+
+
+            result = filter(func, list1)
+
+            print(result)  # <filter object at 0x015FA4F0>
+            print(list(result))  # [2, 4, 6, 8, 10]
+
+
+
+文件操作-----------------------------------------------------------------------------------------------------------------
+
+文件操作的作用
+    把一些内容（数据）存储存放起来，可以让程序下一次执行的时候直接被使用，而不必重新制作一份，省时省力
+
+文件的基本操作
+
+    打开
+        open(name, mode)
+            name: 是要打开的目标文件名的字符串（可以包含文件所在的具体路径）
+            mode: 设置打开的文件模式（访问模式）: 只读、写入、追加等。
+
+        主访问模式
+            模式      描述
+            r         以只读方式打开文件。文件的指针将会放到文件的开头。这是默认模式。
+            rb        以二进制格式打开一个文件用于只读。文件指针奖章放到文件的开头。这是默认模式。
+            r+        打开一个文件用于读写。文件指针将会放在文件的开头。
+            rb+       以而今至打开一个文件用于读写。文件指针将会放在文件开头。
+            w         打开一个文件只用于写入。如果该文件已存在则打开文件，并从头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。
+            wb        以二进制格式打开一个文件只用于写入。如果改文件已存在则打开文件，并从头开始编辑，即原有内容会被删除。如果改文件不存在，创建新文件
+            w+        打开一个文件用于读写。如果改文件已存在则打开文件，并从头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。
+            wb+       以二进制格式打开一个文件用于读写。如果改文件已存在则打开文件，并从头开始编辑，即原有内容会被删除。如果该文件不存在，创建新文件。
+            a         打开一个文件用于追加。如果文件已存在。文件指针将会放在文件的尾部。也就是说，新的内容将会被写入到已有内容之后。如果文件不存在，创建新文件进行写入。
+            ab        以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果改文件不存在，创建新文件进行写入。
+            a+        打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果改文件不存在，创建新文件用于读写。
+            ab+       以二进制格式打开一个文件用于读写。如果改文件已存在，文件指针将会放在文件的结尾。如果改文件不存在，创建新文件用于读写。
+
+    读
+        read()
+            文件对象.read(num)
+            num表示要从文件中读取数据的长度(单位是字节),如果没有传入num,那么就表示读取文件中所有的数据
+
+        readlines()
+            按照行的方式把整个文件中的内容进行一次性读取，并且返回的是一个列表，其中每一行的数据为一个元素。
+
+            f = open('test.txt', 'r')
+            list1 = f.readlines()
+            print(list1)
+            # ['aa\n', 'bb\n', 'cc\n', 'dd\n', 'ee\n', 'ff\n']
+
+        readine()
+            一次读取一行内容
+
+            f = open('test.txt', 'r')
+
+            content = f.readline()
+            print(f"第一行：{content}")
+
+            content = f.readline()
+            print(f"第二行：{content}")
+
+            '''
+            第一行：aa
+
+            第二行：bb
+
+            '''
+
+        seek()
+            用来移动文件指针
+            文件对象.seek(偏移量, 起始位置)
+            起始位置 0 文件开头 1 当前位置 2 文件结尾
+
+    写
+        文件对象.write(数据)
+
+    关闭
+        文件对象.close()
+
+文件备份
+    用户输入当前目录下任意文件名，程序完成对改文件的备份功能(备份文件名为**[备份]后缀
+    test[备份].text
+
+    old_name = input('请输入文件名')
+
+    index =old_name.rfind('.')
+
+    new_name = old_name[:index] + '备份' + old_name[index:]
+
+    old_f = open(old_name, 'rb')
+    new_f = open(new_name, 'wb')
+
+    while True:
+        con = old_f.read(1024)
+        if len(con) == 0:
+            break
+
+        new_f.write(con)
+
+
+文件和文件夹的操作
+引入os模块
+    import os
+    使用os模块功能
+    os.函数名()
+
+    文件重命名
+        os.rename(目标文件名, 新文件名)
+
+    删除文件
+        os.remove(目标文件名)
+
+    获取当前目录
+        os.getcwd()
+
+    改变默认目录
+        os.chdir(目录)
+
+    获取目录列表
+        os.listdir(目录)
+        获取某个文件夹下所有文件，返回一个列表
+
+
+面向对象基础------------------------------------------------------------------------------------------------------------
+
+定义类
+    class 类名():
+        self.属性名 = 值
+        .....
+        def  过程名():
+            .....
+        代码
+        ....
+
+    对象名 = 类名()
+
+    添加属性
+        类外面
+            对象名.属性名 = 值
+        类里面
+            self.属性名 = 值
+
+    获取对象属性
+        类外面 
+            对象名.属性名
+        类里面
+            self.属性名
+
+魔法方法
+    __**_()
+
+    __init__(self):
+        不用调用
+        初始化对象
+
+    __str__(self)
+        return
+        print输出对象的时候，默认打印对象的内存地址。如果类定义了__str__方法，那么就会打印从这个方法中return的数据
+
+    __del__(self)
+        当删除对象时，python解释器也会默认调用__del__()方法
+
+
+继承--------------------------------------------------------------------------------------------------------------------
+经典类
+    class 类名:
+        代码
+        .....
+
+新式类
+    class 类名(object):
+        代码
+        .....
+
+# 父类A
+class A(object):
+    def __init__(self):
+        self.num = 1
+
+    def info_print(self):
+        print(self.num)
+
+
+# 子类B
+class B(A):
+    pass
+
+
+result = B()
+result.info_print()  # 1
+
+
+所有类默认继承object类，object类是顶级类或基类；其他子类叫做派生类。
+
+单继承
+    # 1.师傅类
+    class Master(object):
+        def __init__(self):
+            self.kongfu = '[古法煎饼果子配方]'
+
+        def make_cake(self):
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+
+    # 2.徒弟类
+    class Prentice(Master):
+        pass
+
+
+    # 3.创建对象
+    daqiu = Prentice()
+    print(daqiu.kongfu)  # [古法煎饼果子配方]
+    daqiu.make_cake()  # 运用[古法煎饼果子配方]制作煎饼果子
+
+多继承
+    所谓多继承意思就是一个类同时继承了多个父类
+    当一个类有多个父类的时候，默认使用第一个父类的同名属性和方法。
+
+    # 师傅类
+    class Master(object):
+        def __init__(self):
+            self.kongfu = '[古法煎饼果子配方]'
+
+        def make_cake(self):
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+
+    # 创建学校类
+    class School(object):
+        def __init__(self):
+            self.kongfu = '[黑马煎饼果子配方]'
+
+        def make_cake(self):
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+
+    # 徒弟类
+    class Prentice(Master, School):
+        pass
+
+
+    # 创建对象
+    daqiu = Prentice()
+    print(daqiu.kongfu)  # [古法煎饼果子配方]
+    daqiu.make_cake()  # 运用[古法煎饼果子配方]制作煎饼果子
+
+
+如果子类和父类拥有同名方法，子类创建对象调用属性和方法的时候，调用到的是子类里面的同名属性和方法
+
+
+__mro__
+
+    # 师傅类
+    class Master(object):
+        def __init__(self):
+            self.kongfu = '[古法煎饼果子配方]'
+
+
+    # 创建学校类
+    class School(object):
+        def __init__(self):
+            self.kongfu = '[黑马煎饼果子配方]'
+
+
+    # 徒弟类
+    class Prentice(Master, School):
+        def __init__(self):
+            self.kongfu = '[独创煎饼果子配方]'
+
+
+    # 创建对象
+    daqiu = Prentice()
+    print(Prentice.__mro__)
+    # (<class '__main__.Prentice'>, <class '__main__.Master'>, <class '__main__.School'>, <class 'object'>)
+
+
+子类调用父类的同名方法和属性
+
+    # 师傅类
+    class Master(object):
+        def __init__(self):
+            self.kongfu = '[古法煎饼果子配方]'
+
+        def make_cake(self):
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+
+    # 创建学校类
+    class School(object):
+        def __init__(self):
+            self.kongfu = '[黑马煎饼果子配方]'
+
+        def make_cake(self):
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+
+    # 徒弟类
+    class Prentice(Master, School):
+        def __init__(self):
+            self.kongfu = '[独创煎饼果子配方]'
+
+        def make_cake(self):
+            # 如果是先调用了父类的属性和方法，父类属性会覆盖子类属性，
+            # 故在调用属性前，先调用自己子类的初始化
+            self.__init__()
+            print(f'运用{self.kongfu}制作煎饼果子')
+
+        def make_master_cake(self):
+            Master.__init__(self)
+            Master.make_cake(self)
+
+        def make_school_cake(self):
+            School.__init__(self)
+            School.make_cake(self)
+
+
+    # 创建对象
+    daqiu = Prentice()
+    print(daqiu.kongfu)  # [古法煎饼果子配方]
+    daqiu.make_cake()  # 运用[古法煎饼果子配方]制作煎饼果子
+    daqiu.make_master_cake()  # 运用[古法煎饼果子配方]制作煎饼果子
+    print(daqiu.kongfu)  # [古法煎饼果子配方]
+
+
+多层继承
+    class Tusun(Prentice):
+        pass
+
+
+super()调用父类方法
+    调用顺序遵循__mro__
+    super().函数()
+
+
+私有权限
+    设置私有权限的方法：在属性名和方法名前面加上两个下划线__
+
+    私有属性和私有方法只能在类里面访问和修改
+
+    一般习惯用
+    get_**  来获取私有属性值
+    set_**  来修改私有属性值
+    没有硬性要求
+
+面向对象三大特征
+    封装
+        将属性和方法书写到类的里面的操作即为封装
+        封装可以为属性和方法添加私有权限
+
+    继承
+        子类默认继承父类所有属性和方法
+        子类可以重写父类属性和方法
+
+    多态
+        传入不同的对象，产生不同的结果
+
+
+多态
+    定义：多态是一种使用对象的方式，子类重写父类方式，调用不同子类对象的相同父类方法，
+          可以产生不同的执行结果
+
+    好处：调用灵活，有了多态，更容易编写出通用的代码，做出通用的编程，以适用需求的不断变化
+
+    实现步骤：
+        定义父类，并提供公共方法
+        定义子类，并重写父类方法
+        传递子类对象给调用者，可以看到不同子类执行结果不同
+
+        # 警务人员和警犬一起工作，携带不同的警犬执行不同的工作
+
+
+        # 1 定义父类，提供公共方法：警犬 和 人
+        class Dog(object):
+            def work(self):
+                pass
+
+
+        # 2 定义子类，子类重写父类方法：定义两个类表示不同的警犬
+        class ArmyDog(Dog):
+            def work(self):
+                print("追击敌人")
+
+
+        class DrugDog(Dog):
+            def work(self):
+                print("追查毒品")
+
+
+        # 定义人类
+        class Person(object):
+            def work_with_dog(self, dog):
+                dog.work()
+        # 3 创建对象，调用不同的功能，传入不同对象，观察执行结果
+
+
+        ad = ArmyDog()
+        dd = DrugDog()
+
+        daqiu = Person()
+        daqiu.work_with_dog(ad)
+
+
+类属性和实例属性
+    设置和访问类属性
+        类属性就是 类对象 所拥有的属性，它被 该类的所有实例对象 所共有。
+        类属性可以使用 类对象 或 实例对象 访问
+
+        # 1.定义类，定义类属性
+        class Dog(object):
+            tooth = 10
+
+
+        # 2.创建对象
+        wangcai = Dog()
+        xiaohei = Dog()
+        # 3.访问类属性：类和的对象
+        print(Dog.tooth)  # 10
+        print(wangcai.tooth)  # 10
+        print(xiaohei.tooth)  # 10
+
+        类属性的优点
+        记录的某项数据 始终保持一致时，则定义类属性
+        实例属性 要求 每个对象 为其 单独开辟一份内存空间 来记录数据， 而 类属性 为全类所共有，仅占用一份内存，更节省内存空间
+
+    修改类属性
+        class Dog(object):
+            tooth = 10
+
+
+        Liuzhangyi = Dog()
+        Yurunze = Dog()
+
+        Dog.tooth = 12
+        print(Dog.tooth)
+        print(Liuzhangyi.tooth)
+        print(Yurunze.tooth)
+
+        Liuzhangyi.tooth = 20
+        print(Dog.tooth)
+        print(Liuzhangyi.tooth)
+        print(Yurunze.tooth)
+
+
+类方法和静态方法
+    类方法特点
+        需要用装饰器@classmethod 来标识其为类方法，对于类方法，第一个参数必须是类对象，一般以cls作为第一个参数
+    类方法使用场景
+        当方法中需要使用类对象（如访问私有类属性等）时，定义类方法
+        类方法一般和类属性配合使用
+
+        class Dog(object):
+            __tooth = 10
+
+            @classmethod
+            def get_tooth(cls):
+                return cls.__tooth
+
+
+        wangcai = Dog
+        result = wangcai.get_tooth()
+        print(result)
+
+
+    静态方法特点
+        需要通过装饰器 @staticmethod 来进行装饰，静态方法既不需要传递类对象也不需要传递实例对象（形参没有self/cls）
+        静态方法 也能通过 实例对象 和 类对象 去访问
+
+    静态方法使用场景
+        当方法中 既不需要使用实例对象（如实例对象，实例属性），也不需要使用类对象（如类属性、类方法、创建实例等）时，定义静态方法
+        取消不需要的参数传递，有利于减少不必要的内存占用和性能消耗
+        class Dog(object):
+            @staticmethod
+            def info_print():
+                print("这是一个狗类，用于实现创建狗实例")
+
+
+        daqiu = Dog()
+        daqiu.info_print()
+        Dog.info_print()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
