@@ -4100,7 +4100,7 @@ public class SupplierTest {
 }
 ```
 
-#### Consumer接口
+Consumer接口
 
 Consumer<T>：包含两个方法
 
@@ -4156,7 +4156,7 @@ public class ConsumerTest {
 }
 ```
 
-Predicate接口
+##### Predicate接口
 
 Predicate<T>：常用的四个方法
 
@@ -4238,7 +4238,7 @@ public class PredicateTest {
     }
 ```
 
-#### Function接口
+##### Function接口
 
 Funtion常用的两个方法
 
@@ -4303,6 +4303,325 @@ public class FuncitonTest {
     }
 }
 ```
+
+### Stream流
+
+体验Stream流
+
+需求：按照下面的需求完成集合的创建和遍历
+
++ 创建一个集合，存储多个字符串元素
++ 把集合中所有以“张”开头的元素存储到一个新的集合
++ 把“张”开头的集合中的长度3的元素存储到一个新的集合
++ 遍历上一步得到的集合
+
+```java
+public class StreamDemo01 {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+
+        list.add("雷泽");
+        list.add("甘雨");
+        list.add("云锦");
+        list.add("八重神子");
+        list.add("雷电将军");
+
+        ArrayList<String> zhanglist = new ArrayList<>();
+
+        for (String s : list) {
+            if (s.startsWith("雷")) {
+                zhanglist.add(s);
+            }
+        }
+
+        ArrayList<String> threelist = new ArrayList<>();
+        for (String s : zhanglist) {
+            if (s.length() == 4) {
+                threelist.add(s);
+            }
+        }
+
+        for (String s : threelist) {
+            System.out.println(s);
+        }
+        System.out.println("------------");
+
+        //Stream流改写
+        list.stream().filter(s -> s.startsWith("雷")).filter(s -> s.length() == 4).forEach(System.out::println);
+    }
+}
+```
+
+#### Stream流的生成方式
+
++ 生成流
+  + 通过数据源(集合，数组等)生成流
+  + list.stream()
++ 中间流
+  + 一个流后面可以跟随零个或多个中间操作，其目的主要是打开流，做出某种程度的数据过滤/映射，然后返回一个新的流，交给下一个操作使用
+  + filter()
++ 终结操作
+  + 一个流只能有一个终结操作，当这个操作执行后，流就被使用"光"了，无法再被操作，所以这必定是流的最后一个操作
+  + forEach()
+
+**Stream流的常见生成方式**
+
++ Collection体系的集合可以使用默认方法stream()生成流
+  + default Stream<E> stream()
++ Map体系的集合间接的生成流
++ 数组可以通过Stream接口的静态方法of(T....values)生成流
+
+```java
+public class StreamDemo02 {
+    public static void main(String[] args) {
+        List<String> list = new ArrayList<>();
+        Stream<String> listStream = list.stream();
+        
+        Set<String> set  = new HashSet<String>();
+        Stream<String> setStream = set.stream();
+
+        Map<String,Integer> map =new HashMap<>();
+        Stream<String> keyStream = map.keySet().stream();
+        Stream<Integer> valueStream = map.values().stream();
+        Stream<Map.Entry<String, Integer>> entryStream = map.entrySet().stream();
+        
+        String[] strArray = {"hello","world","java"};
+        Stream<String> strArrayStream = Stream.of(strArray);
+        Stream<String> strArrayStream2 = Stream.of("hello", "world", "java");
+        Stream<Integer> intStream = Stream.of(10,20,30);
+
+    }
+}
+```
+
+#### Stream流常见的中间操作
+
+**Stream<T> filter(Predicate predicate)**:用于对流中的数据进行过滤
+
+Predicate接口中的方法 
+
++ boolean test(T t):对给定的参数进行判断，返回一个布尔值
+
+```java
+//创建一个集合，存储多个字符串元素
+ArrayList<String> list = new ArrayList<>();
+
+list.add("林青霞");
+list.add("张曼玉");
+list.add("王祖贤");
+list.add("柳岩");
+list.add("张敏");
+list.add("张无忌");
+
+//需求1:把list集合中以张开头的元素在控制台输出
+Stream<String> st = list.stream();
+st.filter( s-> s.startsWith("张")).forEach(System.out::println);
+System.out.println("--------------------");
+//需求2：把list集合中长度为3的元素在控制台输出
+list.stream().filter(s -> s.length()==3).forEach(System.out::println);
+System.out.println("--------------------");
+//需求3：把list集合中以张开头的，长度为3的元素在控制台输出
+list.stream().filter(s ->s.length()==3).filter(s -> s.startsWith("张")).forEach(System.out::println);
+```
+
+**Stream<T> limit(long maxSize)**：返回此流中的元素组成的流，截取前指定参数个数的数据
+
+**Stream<T> skip(long n)**：跳过指定参数个数的数据，返回由该流的剩余元素组成的流
+
+```java
+//需求1：取前3个数据在控制台输出
+list.stream().limit(3).forEach(System.out::println);
+System.out.println("-----");
+//需求2：跳过3个元素，把剩下的元素在控制台输出
+list.stream().skip(3).forEach(System.out::println);
+System.out.println("-----");
+//需求3：跳过2个元素，把剩下的元素中的前两个在控制台输出
+list.stream().skip(2).limit(2).forEach(System.out::println);
+```
+
+**static <T> Stream<T> concat(Stream a,Stream b)**：合并a和b两个流为一个流
+
+**Stream<T> distinct()**：返回由该流的不同元素(根据Object.equals(Object))组成的流
+
+```java
+//需求1：取前4个数据组成一个流
+Stream<String> limit = list.stream().limit(4);
+//需求2：跳过2个数据组成一个流
+Stream<String> skip = list.stream().skip(2);
+//需求3：合并需求1和需求2得到的流，并把结果在控制台输出
+Stream.concat(limit,skip).forEach(System.out::println);
+System.out.println("-----");
+//需求4：合并需求1和需求2得到的流，并把结果在控制台输出，要求字符串元素不能重复
+Stream.concat(list.stream().limit(4),list.stream().skip(2)).distinct().forEach(System.out::println);
+```
+
+**Stream<T> sorted()**：返回由此流的元素组成的流，根据自然顺序排序
+
+**Stream<T> sorted(Comparator comparator)**：返回由该留组成的流，根据提供的Comparator进行排序
+
+```java
+ArrayList<String> list =new ArrayList<>();
+list.add("linqingxia");
+list.add("zhangmanyu");
+list.add("wangzuxian");
+list.add("liuyan");
+list.add("zhangmin");
+list.add("zhangwuji");
+//需求1：按照字母顺序把数据在控制台输出
+list.stream().sorted().forEach(System.out::println);
+System.out.println("--------------");
+//需求2：按照字符串长度把数据在控制台输出
+list.stream().sorted((s1,s2)->s1.length()-s2.length()==0?s1.compareTo(s2):s1.length()-s2.length()).forEach(System.out::println);
+```
+
+**<R> Stream<R> map(Function mapper)**：返回由给定函数应用于此流的元素的结果组成的流
+
+​			Function接口中的方法           R apply(T t)
+
+**IntStream mapToInt(ToIntFunction mapper)**：返回一个IntStream其中包含将给定函数应用于此流的元素的结果
+
+​			IntStream：表示原始int流
+
+​			ToIntFunction接口中的方法    int applyAsInt(T value)
+
+```java
+ArrayList<String> list = new ArrayList<>();
+list.add("10");
+list.add("20");
+list.add("30");
+list.add("40");
+list.add("50");
+//需求：将集合中的字符串数据转换为整数之后在控制台输出
+list.stream().map(Integer::parseInt).forEach(System.out::println);
+list.stream().mapToInt(Integer::parseInt).forEach(System.out::println);
+//IntStream特有    int sum() 返回此流中元素的总和
+int sum = list.stream().mapToInt(Integer::parseInt).sum();
+System.out.println(sum);
+```
+
+#### Stream流的常见终结操作方法
+
+**void forEach(Consumer action)**：对此流的每个元素执行操作
+
+Consumer接口中的方法      void accept(T t)：对给定的参数追查行此操作
+
+**long count()**：返回此流中的元素数
+
+```java
+ArrayList<String> list = new ArrayList<>();
+list.add("林青霞");
+list.add("张曼玉");
+list.add("王祖贤");
+list.add("柳岩");
+list.add("张敏");
+list.add("张无忌");
+//需求1：把集合中的元素在控制台输出
+list.stream().forEach(System.out::println);
+//需求2：统计集合中有几个以张开头的元素，并把统计结果在控制台输出
+long count = list.stream().filter(s -> s.startsWith("张")).count();
+System.out.println(count);
+```
+
+#### Stream流的练习
+
+现在有两个ArrayList集合分别存储6名男演员名称和6名女演员名称，要求完成如下操作
+
++ 男演员只要名字为3个字的前三人
++ 女演员只要姓林的，并且不要第一个
++ 把过滤后的男演员姓名和女演员姓名合并到一起
++ 把上一步错做后的元素作为构造方法的参数创建演员对象，遍历数据
+  + 演员类Actor已经提供，里面有一个成员变量，一个带参构造方法，以及成员变量对应的get/set方法
+
+```java
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
+public class Actor {
+    private String name;
+    public Actor(String name){
+        this.name = name;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(){
+        return this.name;
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> l1 = new ArrayList<>();
+        ArrayList<String> l2 = new ArrayList<>();
+        l1.add("周润发");
+        l1.add("成龙");
+        l1.add("刘德华");
+        l1.add("吴京");
+        l1.add("周星驰");
+        l1.add("李连杰");
+        l2.add("林心如");
+        l2.add("张曼玉");
+        l2.add("林青霞");
+        l2.add("柳岩");
+        l2.add("林志玲");
+        l2.add("王祖贤");
+        Stream<String> ls1 = l1.stream().filter(s -> s.length() == 3).limit(3);
+        Stream<String> ls2 = l2.stream().filter(s -> s.startsWith("林")).skip(1);
+        Stream.concat(ls1,ls2).map(Actor::new).map(Actor::getName).forEach(System.out::println);
+
+    }
+}
+```
+
+#### Stream流的收集操作
+
++ R collect(Collector collector)
++ 这个收集方法的参数是一个Collector接口
+
+工具类Collectors提供了具体的收集方法
+
++ publci static <T> Collector toList()：把元素收集到List集合中
++ publci static <T> Collector toSet()：把元素收集到Set集合中
++ public static Collector toMap(Function keyMapper,Function valueMapper)：把元素收集到Map集合中
+
+```java
+//创建List集合对象
+List<String> list = new ArrayList<>();
+list.add("林青霞");
+list.add("张曼玉");
+list.add("王祖贤");
+list.add("柳岩");
+//需求1：得到名字为3个字的流
+Stream<String> listStream = list.stream().filter(s -> s.length() == 3);
+//需求2：把使用Stream操作完毕的数据收集到List集合中并遍历
+List<String> listcollect = listStream.collect(Collectors.toList());
+listcollect.stream().forEach(System.out::println);
+
+//创建Set集合对象
+Set<Integer> set = new HashSet<>();
+set.add(10);
+set.add(20);
+set.add(30);
+set.add(33);
+set.add(35);
+//需求1：得到年龄大于25的流
+Stream<Integer> setstream = set.stream().filter(i -> i > 25);
+//需求2：把使用Stream操作完的数据收集到List集合中并遍历
+Set<Integer> setcollect = setstream.collect(Collectors.toSet());
+setcollect.stream().forEach(System.out::println);
+
+//定义一个字符串数组，每一个字符串数据由姓名数据和年龄数据组合而成
+String[] strArray = {"林青霞，30","张曼玉，35","王祖贤，33","柳岩，25"};
+//需求1：得到字符串中年龄数据大于28的流
+Stream<String> stringStream = Stream.of(strArray).filter(s -> Integer.parseInt(s.split("，")[1]) > 28);
+//需求2：把使用Stream流操作完毕的数据收集到Map集合中并遍历，字符串中的姓名作键，年龄作值
+Map<String, Integer> map = stringStream.collect(Collectors.toMap(s -> s.split("，")[0], s -> Integer.parseInt(s.split("，")[1])));
+Set<String> keys = map.keySet();
+for (String key:keys){
+    Integer value = map.get(key);
+    System.out.println(key+value);
+}
+```
+
+
 
 # end
 
