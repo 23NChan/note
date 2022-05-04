@@ -4621,6 +4621,433 @@ for (String key:keys){
 }
 ```
 
+### 反射
+
+#### 类加载
+
+当程序要使用某个类是，如果该类还未被加载到内存中，则系统会通过**类的加载，类的连接，类的初始化**这三个步骤来对类进行初始化。如果不出现意外情况，JVM将会连续完成这三个步骤，所以有时也把这三个步骤统称为类加载或者类初始化
+
+**类的加载**
+
++ 就是指将class文件读入内存，并为之创建一个java.lang.Class对象
++ 任何类被使用时，系统都会为之建立一个java.lang.Class对象
+
+**类的连接**
+
++ 验证阶段：用于验证被加载的类是否有正确的内部结构，并和其他类协调一致
++ 准备阶段：负责为类的类变量分配内存，并设置默认初始化值
++ 解析阶段：将类的二进制数据中的符号引用替换为直接引用
+
+**类的初始化**
+
++ 在该阶段，主要就是对类变量进行初始化
+
+**类的初始化步骤**
+
++ 假如类还未被加载和连接，则程序先加载并连接该类
++ 假如该类的直接父类还未被初始化，则先初始化其直接父类
++ 假如类中有初始化语句，则系统依次执行这些初始化语句
+
+**类的初始化时机**
+
++ 创建类的实例
++ 调用类的类方法
++ 访问类或者接口的类变量，或者为该类变量赋值
++ 使用反射方法来强制创建某个类或接口对应的java.lang.Class对象
++ 初始化某个类的子类
++ 直接使用java.exe命令来运行某个主类
+
+#### 类加载器
+
+类加载器作用：
+
++ 负责将.class文件加载到内存中，并为之生成对应的java.lang.Class对象
++ 虽然我们不用过分关心类加载机制，但是了解这个机制我们就能更好的理解程序的运行
+
+JVM的类加载机制
+
+- 全盘负责：就是当一个类加载器负责加载某个Class时，该Class所依赖的和引用的其他Class也将由该类加载器负责载入，除非显式使用另一个类加载器来载入
+- 父类委托：就是当一个类加载器负责加载某个Class时，先让父类加载器试图加载该Class，只有在父类加载器无法加载该类时才尝试从自己的类路径中加载该类
+- 缓存机制：保证所有类加载过的Class都会被缓存，当程序需要使用某个Class对象时，类加载器先从缓存区中搜索该Class，只有当缓存区中不存在该Class对象时，系统才会读取该类对应的二进制数据，并将其转换成Class对象，存储到缓存区
+
+**ClassLoader：是负责加载类的对象**
+
+Java运行时具有以下内置类加载器
+
++ Bootstrap class loader：它是虚拟机的内置类加载器，通常表示为null，并且没有父null
++ Platform class loader：平台类加载器可以看到所有平台类，平台类包括由平台类加载器或其祖先定义的Java SE平台API，其实现类和JDK特定的运行时类
++ System class loader：它也被称为应用程序类加载器，与平台类加载器不同。系统类加载器通常用于定义应用程序类路径，模块路径和JDK特定工具上的类
++ **类加载器的继承关系：System的父加载器为Platform，而Platform的父加载器为Bootstrap**
+
+ClassLoader中的两个方法
+
++ static ClassLoader getSystemClassLoader()：返回用于委派的系统类加载器
++ ClassLoader getParent()：返回父类加载器进行委派
+
+#### 反射概述
+
+Java反射机制：是指在运行时去获取一个类的变量和方法信息。然后通过获取到的信息来创建对象，调用方法的一种机制。由于这种动态性，可以极大的增强程序的灵活性，程序不用在编译期就完成确定，在运行期仍然可以扩展
+
+#### 获取Class类的对象
+
+我们要想通过反射去使用一个类，首先我们要获取到该类的字节码文件对象，也就是类型为Class类型的对象这里我们提供三种方式获取Class类型的对象
+
++ 使用类的class属性来获取该类对应的Class对象。举例：Student.class将会返回Student类对应的Class对象
++ 调用对象的getClass()方法，返回该对象所属类对应的Class对象
+  + 该方法时Object类中的方法，所有的Java对象都可以调用该方法
++ 使用Class类中的静态方法forName(String className)，该方法需要传入字符串参数，该字符串参数的值是某个类的全路径，也就是完整包名的路径
+
+```java
+//使用类的class属性来获取该类对应的Class对象
+Class<Student> c1 = Student.class;
+System.out.println(c1);//class Reflect.ReflectDemo01.Student
+Class<Student> c2 = Student.class;
+System.out.println(c1==c2);//true
+System.out.println("----------");
+//调用对象的getClass()方法
+Student s = new Student();
+Class<? extends Student> c3 = s.getClass();
+System.out.println(c1==c3);//true
+System.out.println("----------");
+//使用Class类中的静态方法forName(String className)
+Class<?> c4 = Class.forName("Reflect.ReflectDemo01.Student");
+System.out.println(c1==c4);//true
+```
+
+#### 反射获取构造方法并使用
+
+Class：
+
+Constructor<?>[] getConstructors()：返回所有公共构造方法对象的数组
+
+Constructor<?>[] getDeclaredConsructors()：返回所有构造方法对象的数组
+
+Constructor<T> getConstructor(class<?> ...parameterTypes)：返回单个公共构造方法对象
+
+Constructor<T> getDeclaredConstructor(class<?> ...parameterTypes)：返回单个构造方法对象
+
+Constructor：
+
+newInstance()；
+
+```java
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
+
+public class ReflectDemo {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Class<?> c1 = Class.forName("Reflect.ReflectDemo01.Student");
+        //Constructor<?>[] getConstructors()：返回包含一个数组Constructor对象反射由此表示的类的所有公共构造类对象
+        Constructor<?>[] cons1 = c1.getConstructors();
+        Arrays.stream(cons1).forEach(System.out::println);
+        System.out.println();
+        /**
+         * public Reflect.ReflectDemo01.Student(java.lang.String,int,java.lang.String)
+         * public Reflect.ReflectDemo01.Student()
+         */
+        //Constructor<?>[] getDeclaredConsructors()：返回一个反应Constructor对象表示的类声明的所有Constructor对象的数组类
+        Constructor<?>[] cons2 = c1.getDeclaredConstructors();
+        Arrays.stream(cons2).forEach(System.out::println);
+        /**
+         * public Reflect.ReflectDemo01.Student(java.lang.String,int,java.lang.String)
+         * Reflect.ReflectDemo01.Student(java.lang.String,int)
+         * private Reflect.ReflectDemo01.Student(java.lang.String)
+         * public Reflect.ReflectDemo01.Student()
+         */
+        //Constructor<T> getConstructor(class<?> ...parameterTypes)：返回一个Constructor对象，该对象反映Constructor对象表示的类的指定的公共类函数
+        Constructor<?> con1 = c1.getConstructor();
+        Object obj = con1.newInstance();
+        System.out.println(obj.toString());
+        /**
+         * Student{name='null', age=0, address='null'}
+         */
+        //Constructor<T> getDeclaredConstructor(class<?> ...parameterTypes)：返回一个Constructor对象，该对象反映Constructor对象表示的类或接口的指定类函数
+    }
+}
+```
+
+##### 练习1：
+
+通过反射实现如下操作
+
++ Student s = new Student("林青霞",30,"西安");
++ System.out.println(s);
+
+```java
+public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+    Constructor<?> cn = c.getConstructor(String.class, int.class, String.class);
+    Object o = cn.newInstance("张三", 4, "北京");
+    System.out.println(o);
+}
+```
+
+##### 练习2：
+
+通过反射实现如下操作
+
++ Student s = new Student("林青霞");
++ System.out.println(s);
+
+Constructor：
+
++ public void setAccessible(boolean flag)：值为true，取消访问检查
+
+```java
+public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+    Constructor<?> con = c.getDeclaredConstructor(String.class);
+
+    //Object o = con.newInstance("张三");//IllegalAccessException
+
+    //暴力反射
+    //publci void setAccessible(boolean flag)：值为true，取消访问检查
+    con.setAccessible(true);
+    Object o = con.newInstance("张三");
+    System.out.println(o);
+}
+```
+
+#### 反射获取成员变量并使用
+
+Class：
+
+Field[] getFields()：返回所有公共成员变量的Field对象数组
+
+Field[] getDeclaredFields()：返回所有成员变量的Field对象数组
+
+Field getField(String name)：返回一个公共成员变量的Field对象
+
+Field getDeclaredField(String name)：返回一个成员变量的Field对象
+
+Field：
+
+void set(Object obj, Object value)将指定的对象参数由此，Field对象表示的字段设置为指定的新值
+
+```java
+//获取Class对象
+Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+//getFields()  获取所有公共成员变量
+Field[] fields = c.getFields();
+Arrays.stream(fields).forEach(System.out::println);
+/**
+ * public java.lang.String Reflect.ReflectDemo03.Student.address
+ */
+//getDeclaredFields()    获取所有成员变量
+Field[] declaredFields = c.getDeclaredFields();
+Arrays.stream(declaredFields).forEach(System.out::println);
+/**
+ * private java.lang.String Reflect.ReflectDemo03.Student.name
+ * int Reflect.ReflectDemo03.Student.age
+ * public java.lang.String Reflect.ReflectDemo03.Student.address
+ */
+Field address = c.getField("address");
+System.out.println(address);
+
+//获取无参构造方法创建对象
+Constructor<?> con = c.getConstructor();
+Object obj = con.newInstance();
+
+//void set(Object obj, Object value)将指定的对象参数由此，Field对象表示的字段设置为指定的新值
+address.set(obj,"北京");
+System.out.println(obj);
+```
+
+##### 练习
+
+通过反射完成如下操作
+
++ Student s = new Student();
++ s.name ="林青霞";
++ s.age =30;
++ s.address ="西安";
++ System.out.println(s);
+
+```java
+public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchFieldException {
+    Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+    //Student s = new Student;
+    Constructor<?> con = c.getConstructor();
+    Object obj = con.newInstance();
+
+    //s.name ="张三";
+    Field name = c.getDeclaredField("name");
+    name.setAccessible(true);
+    name.set(obj,"张三");
+
+    //s.age =30;
+    Field age = c.getDeclaredField("age");
+    age.setAccessible(true);
+    age.set(obj,30);
+
+    //s.address ="西安";
+    Field address = c.getField("address");
+    address.setAccessible(true);
+    address.set(obj,"西安");
+
+    System.out.println(obj);
+    //Student{name='张三', age=30, address='西安'}
+}
+```
+
+#### 反射获取成员方法并使用
+
+Class
+
+Method[] getMethods()：返回所有公共方法对象的数组，包括继承的 
+
+Method[] getDeclaredMethods()：返回所有方法对象的数组 不包括继承的
+
+Method getMethod(String name,Class<?>...parameterTypes) 返回一个公共方法对象
+
+Method getDeclaredMethod(String name,Class<?>...parameterTypes) 返回一个方法对象
+
+Method：在类或接口上提供有关单一方法的信息和访问权限
+
+Object invoke(Obect obj, Object ... args)在具有指定参数的指定对象上调用此方法对象表示的基础方法
+
++ Object：返回值类型
++ obj：调用方法的对象
++ args：方法需要的参数
+
+```java
+public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    //获取Class对象
+    Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+
+    //Method[] getMethods()
+    Method[] methods = c.getMethods();
+    Arrays.stream(methods).forEach(System.out::println);
+    System.out.println();
+    /**
+     * public java.lang.String Reflect.ReflectDemo03.Student.toString()
+     * public void Reflect.ReflectDemo03.Student.method1()
+     * public void Reflect.ReflectDemo03.Student.method2(java.lang.String)
+     * public java.lang.String Reflect.ReflectDemo03.Student.method3(java.lang.String,int)
+     * public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
+     * public final void java.lang.Object.wait() throws java.lang.InterruptedException
+     * public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
+     * public boolean java.lang.Object.equals(java.lang.Object)
+     * public native int java.lang.Object.hashCode()
+     * public final native java.lang.Class java.lang.Object.getClass()
+     * public final native void java.lang.Object.notify()
+     * public final native void java.lang.Object.notifyAll()
+     */
+    //Method[] getDeclaredMethods()
+    Method[] declaredMethods = c.getDeclaredMethods();
+    Arrays.stream(declaredMethods).forEach(System.out::println);
+    /**
+     * public java.lang.String Reflect.ReflectDemo03.Student.toString()
+     * private void Reflect.ReflectDemo03.Student.function()
+     * public void Reflect.ReflectDemo03.Student.method1()
+     * public java.lang.String Reflect.ReflectDemo03.Student.method3(java.lang.String,int)
+     * public void Reflect.ReflectDemo03.Student.method2(java.lang.String)
+     */
+
+    //Method getMethod(String name,Class<?>...parameterTypes)
+    Method method1 = c.getMethod("method1");
+
+    //获取无参构造方法创建对象
+    Constructor<?> con = c.getConstructor();
+    Object obj = con.newInstance();
+
+    //Object invoke(Obect obj, Object ... args)在具有指定参数的指定对象上调用此方法对象表示的基础方法
+    method1.invoke(obj);
+
+}
+```
+
+##### 练习
+
+通过反射实现如下操作
+
++ Students  s =new Student();
++ s.method1();
++ s.method2("张三");
++ String ss = s.method3("张三",30);
++ System.out.println(ss);
++ s.function();
+
+```java
+public static void main(String[] args) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    //Student s = new Student;
+    Class<?> c = Class.forName("Reflect.ReflectDemo03.Student");
+    Constructor<?> con = c.getConstructor();
+    Object obj = con.newInstance();
+
+    //s.method1();
+    Method method1 = c.getMethod("method1");
+    method1.invoke(obj);
+
+    //s.method2("张三");
+    Method method2 = c.getDeclaredMethod("method2", String.class);
+    method2.invoke(obj,"张三");
+
+    //String ss = s.method3("张三",30);
+    Method method3 = c.getDeclaredMethod("method3", String.class, int.class);
+    Object ss = method3.invoke(obj, "张三", 30);
+    //System.out.println(ss);
+    System.out.println(ss);
+
+    //s.function();
+    Method function = c.getDeclaredMethod("function");
+    function.setAccessible(true);
+    function.invoke(obj);
+}
+```
+
+####  反射练习
+
+##### 练习1： 
+
+在一个ArrayList<Integer>集合中插入一个字符串数据
+
+```java
+//创建集合
+ArrayList<Integer> array = new ArrayList<>();
+array.add(10);
+array.add(20);
+
+Class<? extends ArrayList> c = array.getClass();
+Method add = c.getMethod("add", Object.class);
+add.setAccessible(true);
+add.invoke(array,"String");
+
+System.out.println(array);
+//[10, 20, String]
+```
+
+##### 练习2：
+
+通过配置文件运行类中的方法
+
+```java
+Properties prop= new Properties();
+FileReader fr = new FileReader("javaSE\\FileDemo\\class.txt");
+prop.load(fr);
+fr.close();
+
+/**
+ * className = Reflect.ReflectDemo06.Student
+ * methodName = study
+ */
+String className = prop.getProperty("className");
+String methodName = prop.getProperty("methodName");
+
+//通过反射来使用
+Class<?> c = Class.forName(className);
+Constructor<?> con = c.getConstructor();
+Object obj = con.newInstance();
+Method method = c.getMethod(methodName);
+method.invoke(obj);
+```
+
+```
+className = Reflect.ReflectDemo06.Student
+methodName = study
+```
+
 
 
 # end
