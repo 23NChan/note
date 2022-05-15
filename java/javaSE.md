@@ -5048,7 +5048,72 @@ className = Reflect.ReflectDemo06.Student
 methodName = study
 ```
 
+## 枚举
 
+java中对常量数据的配置可以使用枚举类型实现，枚举类型时面向对象的一种类型，它也有对象、属性、方法等所以他非常方便定义，枚举类型将他的对象(实例)设置为常量方便读取和使用
+
+枚举类型定义格式如下
+
+``` java
+//定义枚举类要用关键字enum
+public enum 枚举类名{
+    枚举项1, 枚举项2, 枚举项3;
+    构造方法
+    成员变量
+   	成员方法
+```
+
+1. 每个枚举类型继承java.lang.Enum，所以枚举类不能再继承其他类型
+
+2. 枚举项就是枚举类型的对象(实例)，一般使用大写字母，一个枚举项表示一个常量项，多个枚举项中间用逗号分隔
+
+3. 枚举类型的构造方法使用private私有
+
+4. 通过"枚举类名.枚举项名称"去访问指定的枚举项
+
+5. ```java
+   public enum EnumDemo {
+       //枚举项，采用全部大写命名
+       //枚举项就是一个一个对象，它是常量，可以定义枚举项的时候调用构造方法
+       WEIXINPAY("weixin","https://api.mch.weixin.qq.com/pay/"),
+       ALIPAY("ali","https://openapi.alipay.com/"),
+       UNIONPAY("union","https://gateway.95516.com/gateway/api/");
+   
+       private String name;//支付名称
+       private String payUrl;//支付地址
+   
+       //定义构造方法，枚举类型构造方法时private
+       EnumDemo(String name, String payUrl) {
+           this.name = name;
+           this.payUrl = payUrl;
+       }
+   
+       EnumDemo() {
+       }
+   
+       public String getName() {
+           return name;
+       }
+   
+       public void setName(String name) {
+           this.name = name;
+       }
+   
+       public String getPayUrl() {
+           return payUrl;
+       }
+   
+       public void setPayUrl(String payUrl) {
+           this.payUrl = payUrl;
+       }
+   
+       public static void main(String[] args) {
+           EnumDemo weixinpay = EnumDemo.WEIXINPAY;
+           System.out.println(weixinpay.getName());
+           System.out.println(weixinpay.getPayUrl());
+       }
+   }
+   ```
 
 # end
 
