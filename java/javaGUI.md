@@ -1526,7 +1526,244 @@ public class Gobang {
 }
 ```
 
+## Swing编程
 
+### Swing概述
+
+Swing 是由100%纯Java实现的，不再依赖于本地平台的GUI，因此可以在所有平台上都保持相同的界面外观。独立于本地平台的Swing组件被称为**轻量级组件**；而依赖于本地的AWT组件被称为**重量级组件**
+
+由于Swing的所有组件完全采用Java实现，不在调用本地平台的GUI，所以导致Swing图形界面的显示速度要比AWT图形界面的显示速度慢一些，但相对于快速发展的硬件设施而言，这种微小的速度差别无妨大碍。
+
+**使用Swing的优势**
+
+1. Swing组件不再依赖于本地平台的GUI，无须采用各种平台的GUI交集，因此Swing提供了大量图形界面组件，远远超出了AWT所提供的图形界面组件集
+2. Swing组件不再依赖于本地平台GUI，因此不会产生与平台相关的bug
+3. Swing组件在各种平台上运行时可以保证具有相同的图形界面外观
+
+**Swing的特征**：
+
+1. Swing组件采用MVC(Model-View-Controller，即模型-视图-控制器)设计模式
+
+   ```
+   模型(Model)：用于维护组件的各种状态；
+   
+   视图(View)：是组件的可视化外表；
+   
+   控制器(Controller)：用于控制对于各种事件、组件做出响应
+   
+   当模型发生改变时，它会通知所有依赖它的视图，视图会根据模型数据来更新自己。Swing使用UI代理来包装视图和控制器，还有一个模型对象来维护该组件的状态。例如，按钮JButton有一个维护其状态信息的模型ButtonModel对象。Swing组件的模型是自动设置的，因此一般都是用JButton，而无须关心ButtonModel对象。
+   ```
+
+2. Swing在不同平台上表现一致，并且有能力提供本地平台不支持的外观。由于Swing采用MVC模式来维护个组件，所以当组件的外观被改变时，对组件的状态信息(由模式维护)没有任何影响。因此，Swing可以使用插拔式外观感觉(Pluggable Look And Feel, PLAF)来控制组件外观，是的Swing图形界面在同一平台上运行时拥有不同的外观，用户可以选择自己喜欢的外观。相比之下，在AWT图形界面中，由于控制组件外观的对等类与具体平台相关，因此AWT组件总是具有与本地平台相同的外观。
+
+**Swing组件和AWT组件的对应关系**
+
+大部分情况下，只需要在AWT组件的名称前面加个J，就可以得到其对应的Swing组件名称，但有几个例外
+
+1. JComboBox：对应于AWT里的Choice组件，但比Choice组件功能更丰富
+2. JFileChooser：对应于AWT里的FileDialog组件
+3. JScrollBar：对应于AWT里的Scrollbar组件，注意前两个组件类名中b字母的大小写差别
+4. JCheckBox：对应于AWT里的Checkbox组件，注意前两个组件类名中b字母的大小写差别
+5. JCheckBoxMenuItem：对应于AWT里的CheckboxMenuItem组件，注意两个组件类中b字母的大小写差别
+
+### Swing基本组件的用法
+
+**Swing组件按功能分类**：
+
+1. 顶级容器：JFrame、Japplet、JDialog、JWindow
+2. 中间容器：JPanel、JScoolPane、JSplitPane、JToolBar等
+3. 特殊容器：在用户界面上具有特殊作用的容器，JIntemalFrame、JRootPane、JLayeredPane、JDestopPane
+4. 基本组件：实现人机交互的组件，JButton、JComboBox、JList、JMenu、JSlider
+5. 不可编辑信息的显示组件：向用户显示不可编辑信息的组件，JLable、JProgressBar、JToolTip
+6. 可编辑信息的显示组件：向用户显示能被编辑的格式化信息组件，JTable、JTextArea、JTextField
+7. 特殊对话框组件：可以直接生产特殊对话框的组件，JColorChooser、JFileChooser
+
+```java
+public class SwingComponentDemo1 {
+    JFrame frame = new JFrame("测试Swing基本组件");
+    //声明菜单相关组件
+    JMenuBar menuBar = new JMenuBar();
+
+    JMenu fileMenu = new JMenu("文件");
+    JMenu editMenu = new JMenu("编辑");
+
+    JMenuItem auto = new JMenuItem("自动换行");
+
+    JMenu formatMenu = new JMenu("格式");
+    JMenuItem commit = new JMenuItem("注释");
+    JMenuItem cancelCommit = new JMenuItem("取消注释");
+
+    //声明文本域
+    JTextArea ta = new JTextArea(8,20);
+
+    //声明列表框
+    String[] colors={"红色","绿色","蓝色"};
+    JList<String> colorList = new JList<String>(colors);
+
+
+    //声明选择相关组件
+    JComboBox<String> colorSelect = new JComboBox<>();
+
+    ButtonGroup bg = new ButtonGroup();
+    JRadioButton male = new JRadioButton("男",true);
+    JRadioButton female = new JRadioButton("女",false);
+
+    JCheckBox isMarried =new JCheckBox("是否已婚",false);
+
+    //声明底部
+    JTextField tf = new JTextField(40);
+    JButton ok;
+    JMenuItem copy;
+    JMenuItem paste;
+
+    {
+        try {
+            copy = new JMenuItem("复制",new ImageIcon(new URL("https://gitee.com/A_Xishuai/img/raw/master/Swing/copy.png")));
+            paste = new JMenuItem("粘贴",new ImageIcon(new URL("https://gitee.com/A_Xishuai/img/raw/master/Swing/paste.png")));
+            ok = new JButton("确认",new ImageIcon(new URL("https://gitee.com/A_Xishuai/img/raw/master/Swing//ok.png")));
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //声明右键菜单
+    JPopupMenu jPopupMenu = new JPopupMenu();
+
+    ButtonGroup poupButtonBg = new ButtonGroup();
+
+    JRadioButtonMenuItem metalItem = new JRadioButtonMenuItem("Metal 风格");
+    JRadioButtonMenuItem nimbusItem = new JRadioButtonMenuItem("Nimbus 风格");
+    JRadioButtonMenuItem windowsItem = new JRadioButtonMenuItem("Windows 风格",true);
+    JRadioButtonMenuItem windowsClassicItem = new JRadioButtonMenuItem("Windows 经典风格");
+    JRadioButtonMenuItem motifItem = new JRadioButtonMenuItem("Motif 风格");
+    public void init(){
+        //组装视图
+
+        //组装底部
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(tf);
+        bottomPanel.add(ok);
+
+        frame.add(bottomPanel, BorderLayout.SOUTH);
+
+        //组装选择相关组件
+        JPanel selectPanel = new JPanel();
+
+        colorSelect.addItem("红色");
+        colorSelect.addItem("绿色");
+        colorSelect.addItem("蓝色");
+        selectPanel.add(colorSelect);
+        bg.add(male);
+        bg.add(female);
+        selectPanel.add(male);
+        selectPanel.add(female);
+        selectPanel.add(isMarried);
+        
+        //组装文本域和选择相关组件
+        Box topLeft = Box.createVerticalBox();
+        topLeft.add(ta);
+        topLeft.add(selectPanel);
+
+        Box top = Box.createHorizontalBox();
+        top.add(topLeft);
+        top.add(colorList);
+        frame.add(top);
+
+        //组装顶部菜单
+        formatMenu.add(commit);
+        formatMenu.add(cancelCommit);
+
+        editMenu.add(auto);
+        editMenu.addSeparator();
+        editMenu.add(copy);
+        editMenu.add(paste);
+        editMenu.addSeparator();
+        editMenu.add(formatMenu);
+
+        menuBar.add(fileMenu);
+        menuBar.add(editMenu);
+
+        frame.setJMenuBar(menuBar);
+
+        //组装右键菜单
+        poupButtonBg.add(metalItem);
+        poupButtonBg.add(nimbusItem);
+        poupButtonBg.add(windowsItem);
+        poupButtonBg.add(windowsClassicItem);
+        poupButtonBg.add(motifItem);
+
+        ActionListener listener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //当前选择的是哪一个风格
+                String actionCommand = e.getActionCommand();
+                try {
+                    changeFlavor(actionCommand);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+        metalItem.addActionListener(listener);
+        nimbusItem.addActionListener(listener);
+        windowsItem.addActionListener(listener);
+        windowsClassicItem.addActionListener(listener);
+        motifItem.addActionListener(listener);
+
+        jPopupMenu.add(metalItem);
+        jPopupMenu.add(nimbusItem);
+        jPopupMenu.add(windowsItem);
+        jPopupMenu.add(windowsClassicItem);
+        jPopupMenu.add(motifItem);
+
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ta.setComponentPopupMenu(jPopupMenu);
+        frame.pack();
+        frame.setVisible(true);
+    }
+    private void changeFlavor(String command) throws Exception {
+        switch (command) {
+            case "Metal 风格":
+                UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+                break;
+            case "Nimbus 风格":
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                break;
+            case "Windows 风格":
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                break;
+            case "Windows 经典风格":
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+                break;
+            case "Motif 风格":
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+                break;
+        }
+        //刷新组件外观
+        SwingUtilities.updateComponentTreeUI(frame.getContentPane());
+        SwingUtilities.updateComponentTreeUI(menuBar);
+        SwingUtilities.updateComponentTreeUI(jPopupMenu);
+    }
+
+    public static void main(String[] args) {
+        new SwingComponentDemo1().init();
+    }
+}
+```
+
+#### 为组件设置边框
+
+![image-20220510191959441](https://gitee.com/A_Xishuai/img/raw/master/img/image-20220510191959441.png)
+
+**特殊的Border**
+
+1. TitledBorder：它的作用并不是直接作为其他组件添加边框，而是为其他边框设置标题，创建该类的对象时，需要传入一个其他的Border对象
+2. CompoundBorder：用来组合其他两个边框，创建该类的对象时，需要传入其他两个Border对象，一个作为内边框，一个作为外边框
+
+**给组件设置边框步骤**：
+
+1. 使用BorderFactory或者XxxBorder创建Border的实例对象；
+2. 调用Swing组件的setBorder(Border b)方法为组件设置边框；
 
 
 
