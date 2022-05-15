@@ -333,10 +333,244 @@ revoke 权限列表 on 数据库名.表名 from '用户名'@'主机名';
 
 ### 流程函数
 
-| 函数                                                       | 说明                                        |
-| ---------------------------------------------------------- | ------------------------------------------- |
-| if(value,t,f)                                              | 如果value为true则返回t，否则返回f           |
-| if null(value1,value2)                                     | 如果value1不为空，返回value1,否则返回value2 |
-| cse when [val1] then[res1] ... else [default] end          |                                             |
-| case [expr] when [val1] then [res1] ... else [default] end |                                             |
+| 函数                                                       | 说明                                                  |
+| ---------------------------------------------------------- | ----------------------------------------------------- |
+| if(value,t,f)                                              | 如果value为true则返回t，否则返回f                     |
+| if null(value1,value2)                                     | 如果value1不为空，返回value1,否则返回value2           |
+| case when [val1] then[res1] ... else [default] end         | 如果val1为true，返回res1，...否则返回default默认值    |
+| case [expr] when [val1] then [res1] ... else [default] end | 如果expr的值等于val1，返回res1，否则返回default默认值 |
+
+##  约束
+
+概念：约束是作用于表中字段上的规则，用于限制存储在表中的数据
+
+目的：保证数据库中数据的正确性、有效性和完整性
+
+| 约束                     | 描述                                                     | 关键字      |
+| ------------------------ | -------------------------------------------------------- | ----------- |
+| 非空约束                 | 限制该字段的数据不能为null                               | not null    |
+| 唯一约束                 | 保证该字段的所有数据都是唯一、不重复的                   | unique      |
+| 主键约束                 | 主键是一行数据的唯一标识，要求非空且唯一                 | primary key |
+| 默认约束                 | 保存数据时，如果未指定该字段的值，采用默认值             | default     |
+| 检查约束(8.0.16版本之后) | 保证字段值满足某一个条件                                 | check       |
+| 外键约束                 | 用来让两张表的数据之间建立连接，保证数据的一致性和完整性 | foreign key |
+
+``` sql
+添加外键：
+create table 表名(
+	字段名 数据类型,
+    ...
+    [constraint] [外键名称] foreign key(外键字段名) references 主表(主表字段名)
+);
+
+alter table 表名 add constraint 外键名称 foreign key(外键字段名) references 主表(主表字段名) on update [行为] on delete [行为];
+删除外键：
+alter table 表名 drop foreign key 外键名称;
+```
+
+### 外键约束
+
+| 行为        | 说明                                                         |
+| ----------- | ------------------------------------------------------------ |
+| no action   | 父表 删除/更新，检索记录是否有对应外键，有则不允许删除/更新(与restrict一致) |
+| restrict    | 父表 删除/更新，检索记录是否有对应外键，有则不允许删除/更新(与no action一致) |
+| cascade     | 父表 删除/更新，检索记录是否有对应外键，有则，也删除/更新外键在子表中的记录 |
+| set null    | 父表删除，检索记录是否有对应的外键，有则，设置子表中该外键值为null(这里要求该外键允许取null) |
+| set default | 父表有变更时，子表将外键设置成一个默认的值(Innodb不支持)     |
+
+## 多表查询
+
+### 多表关系
+
+**一对多**
+
+案例：部门与员工的关系
+
+关系：一个部门对应多个员工，一个员工对应一个部门
+
+实现：在多的一方建立外键，指向一的一方主键
+
+**多对多**
+
+案例：学生与课程的关系
+
+关系：一个学生可以选修多门课程，一门课程也可以提供多个学生选择
+
+实现：建立第三张中间表，中间表至少包含两个外键，分别关联两方主键
+
+**一对一**
+
+案例：用户与用户详情的关系
+
+关系：一对一关系，多用于单表拆分，将一张表的基础字段放在一张表中，其他详情字段放在另一张表中，以提升操作效率
+
+实现：在任意一方加入外键，关联另外一方的主键，并且设置外键唯一的(unique)
+
+### 内连接
+
+相当于查询A、B交集部分数据
+
+``` sql
+-- 隐式内连接
+select 字段列表 from 表1, 表2 where 条件 ...;
+-- 显式内连接
+select 字段列表 from 表1 [inner] join 表2 on 连接条件 ...;
+```
+
+
+
+### 外连接
+
+左外连接：查询左表所有数据，以及两张表交集部分数据
+
+右外连接：查询右表所有数据，以及两张表交集部分数据
+
+``` sql
+左外连接
+select 字段列表 from 表1 left [outer] join 表2 on 条件 ...;
+右外连接
+select 字段列表 from 表1 right [outer] join 表2 on 条件 ...;
+```
+
+### 自连接
+
+当前表与自身的连接查询，自连接必须使用表别名
+
+``` sql
+select 字段列表 from 表A 别名A join 表A 别名B on 条件... ;
+```
+
+### 联合查询 union, union all
+
+对于union查询，就是把多次查询的结果合并起来，形成一个新的查询结果
+
+``` sql
+select 字段列表 from 表A ...
+union [all]
+select 字段列表 from 表B ...;
+```
+
++ 对于联合查询的多张表的列数必须保持一致，字段类型也需要保持一致
++ union all 会将全部的数据直接合并在一起，union会对合并之后的数据去重
+
+### 子查询
+
+概念：SQL语句中嵌套select语句，称为嵌套查询，又称子查询
+
+``` sql
+select * from t1 where column1 = (select column1 from t2);
+```
+
+子查询外部的语句可以是insert / update / delete / select 的任何一个
+
+根据子查询结果不同，分为：
+
++ 标量子查询(子查询结果为单个值)
++ 列子查询(子查询结果为一列)
++ 行子查询(子查询结果为一行)
++ 表子查询(子查询结果为多行多列)
+
+根据子查询位置，分为：where之后、from之后、seelect之后
+
+#### 标量子查询
+
+子查询返回的结果是单个值(数字、字符串、日期)，最简单的形式，这种子查询称为**标量子查询**
+
+常用的操作符： =  <>  >  >=  <  <=
+
+```sql
+select * from emp where country_id = (select id from country where country_name='稻妻');
+```
+
+#### 列子查询
+
+子查询返回的结果是一列(可以是多行)，这种子查询称为**列子查询**
+
+常用的操作符：in、not in、any、some、all
+
+| 操作符 | 描述                                   |
+| ------ | -------------------------------------- |
+| in     | 在指定的集合范围之内，多选一           |
+| not in | 不在指定的集合范围之内                 |
+| any    | 子查询返回列表中，有任意一个满足即可   |
+| some   | 与any等同，使用some的地方都可以使用any |
+| all    | 子查询返回列表的所有值都必须满足       |
+
+``` sql
+-- 比财务部所有人工资都高的信息
+select * from emp where salary > all (select salary from emp where dept_id = (select id from dept where name = '财务部') );
+-- 比研发部任意一人工资高的信息
+select * from emp where salary > any (select salary from emp where dept_id = (select id from dept where name = '研发部') );
+```
+
+#### 行子查询
+
+子查询返回的结果是一行(可以是多列)，这种子查询称为杭子查询
+
+常用的操作符：=   <>   in   not in
+
+``` sql
+-- 查询与"张三"的薪资及直属领导相同的员工信息
+select * from emp where (salary, managerid) = (select salary, managerid from emp where name ='张无忌');
+```
+
+#### 表子查询
+
+子查询返回的结果是多行多列，这种子查询称为表子查询
+
+常用的操作符：in
+
+``` sql
+-- 查询与"张三", "李四"的制位和薪资相同的员工信息
+select * from emp where (job, salary) in (select job, salary from emp where name = "张三" or name = "李四");
+```
+
+## 事务
+
+**事务** 是一组操作的集合，它是一个不可分割的工作单位，事务会把所有的操作作为一个整体一起向系统提交或撤销操作请求，即这些操作 **要么同时成功**，**要么同时失败**
+
+### 事务操作
+
+``` sql
+-- 查看/设置事务提交方式
+select @@autocommit;
+select @@autocommit =0;
+
+-- 提交事务
+commit;
+-- 回滚事务
+rollback;
+
+```
+
+### 事务四大特性
+
++ 原子性(Atomicity)：事务是不可分割的最小操作单元，要么全部成功，要么全部失败
++ 一致性(Consistency)：事务完成时，必须使所有的数据都保持一致
++ 隔离性(Isolation)：数据库系统提供的隔离机制，保证事务在不受外部并发操作影响的独立环境下运行
++ 持久性(Durability)：事务一旦提交或回滚，它对数据库中的数据的改变就是永久的
+
+### 并发事务问题
+
+| 问题       | 描述                                                         |
+| ---------- | ------------------------------------------------------------ |
+| 脏读       | 一个事务读到另一个事务还没有提交的数据                       |
+| 不可重复读 | 一个事务先后读取同一条记录，但两次读取的数据不同，称之为不可重复读 |
+| 幻读       | 一个事务按照条件查询数据时，没有对应的数据行，但是再插入数据时，又发现这条数据已经存在，好像出现了“幻影” |
+
+### 事务隔离级别
+
+| 隔离级别              | 脏读 | 不可重复读 | 幻读 |
+| --------------------- | ---- | ---------- | ---- |
+| Read uncommitted      | T    | T          | T    |
+| Read committed        |      | T          | T    |
+| Repeatable Read(默认) |      |            | T    |
+| Serializable          |      |            |      |
+
+``` sql
+-- 查看事务隔离级别
+select @@transaction_isolation;
+-- 设置事务隔离级别
+set [session|global] transaction isolation level {read uncommitted | read committed | repeatable read |}
+```
 
