@@ -1,6 +1,6 @@
 [toc]
 
-### 认识时间复杂度
+## 认识时间复杂度
 
 常熟时间的操作：一个操作如果和数据量没有关系，每次都是固定时间完成的操作，叫做常数操作。
 
@@ -8,7 +8,7 @@
 
 评价一个算法流程的好坏，先看时间复杂度的指标，然后再分析不同数据样本下的实际运行时间，也就是常数项时间。
 
-#### 二分查找
+### 二分查找
 
 1. O(M*logM)
 2. O(N+M)
@@ -21,7 +21,7 @@ O(M*logM)+O(N+M)
 
 如果N很大M很小O(M*logM)
 
-#### 冒泡排序（淘汰）
+### 冒泡排序（淘汰）
 
 时间复杂度O(N^2)
 
@@ -50,7 +50,7 @@ O(M*logM)+O(N+M)
 
 
 
-#### 选择排序（淘汰）
+### 选择排序（淘汰）
 
 时间复杂度O(N^2)
 
@@ -79,7 +79,7 @@ public static void swap(int[] arr, int i, int j) {
 }
 ```
 
-#### 插入排序
+### 插入排序
 
 时间复杂度
 
@@ -114,7 +114,7 @@ public static void swap(int[] arr, int i,int j){
 
 
 
-#### 对数器
+### 对数器
 
 对数期的概念和使用
 
@@ -126,11 +126,11 @@ public static void swap(int[] arr, int i,int j){
 6. 如果有一个样本是的比对出错，打印样本分析是哪个方法出错
 7. 当样本数量很多时比对测试依然正确，可以确定方法a已经正确 
 
-### 排序
+## 排序
 
-#### 归并排序
+### 归并排序
 
-##### 递归归并
+#### 递归归并
 
 时间复杂度：O(N*logN)
 
@@ -175,9 +175,9 @@ public static void merge(int[] arr, int l, int mid, int r) {
 }
 ```
 
-##### 小和问题
+#### 小和问题
 
-在一个数组中，没一个数左边必当前数小的数累加起来，叫做这个数组的小和
+在一个数组中，每一个数左边比当前数小的数累加起来，叫做这个数组的小和
 
 ```java
 public static int smallsum(int[] arr) {
@@ -235,9 +235,9 @@ public static int nomal(int[] arr) {
 }
 ```
 
-#### 快速排序
+### 快速排序
 
-##### 荷兰国旗问题
+#### 荷兰国旗问题
 
 给定一个数组arr，和一个数num，请把小于num的数放在数组的左边，等于num的数放在数组的中间，大于num的数放在数组的右边
 
@@ -267,7 +267,7 @@ public static void swap(int[] arr, int i, int j) {
 }
 ```
 
-##### 随机递归快排
+#### 随机递归快排
 
 时间复杂度 长期期望O(N*logN)
 
@@ -317,7 +317,7 @@ public static void quicksort(int[] arr) {
     }
 ```
 
-#### 堆排序
+### 堆排序
 
 时间复杂度O(N*logN)
 
@@ -330,7 +330,7 @@ public static void quicksort(int[] arr) {
 3. 如果知识建立堆的过程，时间复杂度为O(N)
 4. 优先级队列结构，就是堆结构
 
-##### 大根堆->完全二叉树
+#### 大根堆->完全二叉树
 
 时间复杂度O(N)
 
@@ -356,7 +356,7 @@ public static void heapInsert(int[] arr, int index) {
 }
 ```
 
-小根堆->完全二叉树
+#### 小根堆->完全二叉树
 
 任何一颗子树的最小值都是这颗子树的头部
 
@@ -378,11 +378,153 @@ public static void heapInsert(int[] arr, int index) {
 }
 ```
 
+#### 堆排序
+
+```java
+public static void heapSort(int[] arr) {
+    if (arr == null || arr.length < 2) {
+        return;
+    }
+    /**  效率慢舍弃   用作演技heapInsert
+    for (int i = 0; i < arr.length; i++) {//O(N)
+        heapInsert(arr, i);//O(logN)
+    }
+     */
+
+    /**
+     * 从后往前使每个数下沉效率更快
+     */
+    for (int i=arr.length-1;i>=0;i--){
+        heapify(arr,i,arr.length);
+    }
 
 
-### Case
+    int heapSize = arr.length;
+    swap(arr, 0, --heapSize);
+    while (heapSize > 0) {//O(N)
+        heapify(arr, 0, heapSize);//O(logN)
+        swap(arr, 0, --heapSize);//O(1)
+    }
+}
 
-#### Max左-Max右最大绝对值问题
+public static void heapInsert(int[] arr, int index) {
+    while (arr[index] > arr[(index - 1) / 2]) {  //不可用位运算  当index等于0时 错误
+        swap(arr, index, (index - 1) >> 1);
+        index = (index - 1) >> 1;
+    }
+}
+
+public static void heapify(int[] arr, int index, int heapSize) {
+    int left = (index << 1) + 1;  //左子节点下标
+    while (left < heapSize) {//下方还有子节点的时候
+        //如果有两个子节点返回大子节点下标
+        int largest = left + 1 < heapSize && arr[left + 1] > arr[left] ? left + 1 : left;
+        largest = arr[largest] > arr[index] ? largest : index;
+        if (largest == index) {
+            break;
+        }
+        swap(arr, largest, index);
+        index = largest;
+        left = (index << 1) + 1;
+    }
+}
+```
+
+### 桶排序
+
+```java
+public static void radixSort(int[] arr) {
+    if (arr == null || arr.length < 2) {
+        return;
+    }
+    radixSort(arr, 0, arr.length - 1, maxbits(arr));
+}
+
+public static int maxbits(int[] arr) {
+    int max = Integer.MIN_VALUE;
+    for (int i = 0; i < arr.length; i++) {
+        max = Math.max(max, arr[i]);
+    }
+    int res = 0;
+    while (max != 0) {
+        res++;
+        max /= 10;
+    }
+    return res;
+}
+
+public static void radixSort(int[] arr, int l, int r, int digit) {
+    final int radix = 10;
+    int i = 0, j = 0;
+    //有多少个数准备多少个辅助空间
+    int[] bucket = new int[r - l + 1];
+    for (int d = 1; d <= digit; d++) {
+        int[] count = new int[radix];
+
+        for (i = l; i <= r; i++) {
+            j = getDigit(arr[i], d);
+            count[j]++;
+        }
+        for (i = 1; i < radix; i++) {
+            count[i] = count[i] + count[i - 1];
+        }
+        for (i = r; i >= l; i--) {
+            j = getDigit(arr[i], d);
+            bucket[count[j] - 1] = arr[i];
+            count[j]--;
+        }
+        for (i = l, j = 0; i <= r; i++, j++) {
+            arr[i] = bucket[j];
+        }
+    }
+}
+
+public static int getDigit(int x, int d) {
+    return ((x / ((int) Math.pow(10, d - 1))) % 10);
+}
+```
+
+## 哈希表
+
+1. 有无伴随数据，是HashMap和HashSet唯一的区别，底层的实现结构是一回事
+2. 放入哈希表的东西，如果是基础类型，内部按值传递，内存占用就是这个东西地大小
+3. 放入哈希表的东西，如果不是基础类型，内部按引用传递，内存占用是这个东西内存地址的大小
+
+## 无序表
+
+1. 有无伴随数据，是TreeSet和TreeMap唯一的却别，底层的实际结构是一回事
+2. 放入有序表的东西，如果不是基础类型，必须提供比较器
+3. 红黑树、AVL数、size-balance-tree和跳表等都属于有序表结构，知识底层具体实现不同
+4. 不管是什么底层具体实现，只要是有序表，，都有固定的基本功能和固定的时间复杂度
+
+## 链表
+
+**单链表的节点结构**
+
+``` java
+Class Node<V>{
+    V value;
+    Node next;
+}
+```
+
+以上结构的节点依次连接起来所形成的链叫单链表结构
+
+**双链表的节点结构**
+
+``` java
+Class Node<V>{
+    V value;
+    Node next;
+    Node last;
+}
+```
+
+以上结构的节点依次连接起来所形成的链叫双链表结构
+
+## Case
+
+### Max左-Max右最大绝对值问题
 
 时间复杂度O(N)
 
@@ -415,7 +557,7 @@ public static int AbsMax(int[] arr) {
 }
 ```
 
-#### 子矩阵的最大累加和问题
+### 子矩阵的最大累加和问题
 
 时间复杂度(N^2*M)
 
